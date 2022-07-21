@@ -35,3 +35,12 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### macOS Patch ###
+# iCloud generated files
+*.icloud
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
