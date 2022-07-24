@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
 
 import com.nexters.pinataserver.common.domain.AbstractDateTimeEntity;
 
@@ -23,7 +22,8 @@ public class User extends AbstractDateTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Email
+	private Long providerId;
+
 	private String email;
 
 	private String nickname;
