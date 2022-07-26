@@ -9,13 +9,15 @@ import javax.persistence.Table;
 
 import com.nexters.pinataserver.common.domain.AbstractDateTimeEntity;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
+@Builder
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "users")
+@Table(name = "tb_users")
 public class User extends AbstractDateTimeEntity {
 
 	@Id
