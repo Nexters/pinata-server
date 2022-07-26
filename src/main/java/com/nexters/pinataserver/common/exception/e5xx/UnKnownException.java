@@ -1,15 +1,17 @@
-package com.nexters.pinataserver.common.exception.e4xx;
+package com.nexters.pinataserver.common.exception.e5xx;
+
+import org.springframework.http.HttpStatus;
 
 import com.nexters.pinataserver.common.exception.ResponseDefinition;
 import com.nexters.pinataserver.common.exception.ResponseException;
 
-import org.springframework.http.HttpStatus;
-public enum NotFoundException implements ResponseDefinition {
+public enum UnKnownException implements ResponseDefinition {
 
-	USER(HttpStatus.BAD_REQUEST, "ERR0001", "해당 사용자가 존재하지 않습니다.");
+	UNKNOWN(HttpStatus.INTERNAL_SERVER_ERROR, "UNKNOWN", "서버 에러로 인해 데이터를 로드 할 수 없습니다.");
+
 	private final ResponseException responseException;
 
-	NotFoundException(HttpStatus status, String code, String message) {
+	UnKnownException(HttpStatus status, String code, String message) {
 		this.responseException = new ResponseException(status, code, message);
 	}
 

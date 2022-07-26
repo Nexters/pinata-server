@@ -13,7 +13,7 @@ public class ResponseException extends Exception {
 	private int status;
 
 	@EqualsAndHashCode.Include
-	private Integer code;
+	private String code;
 
 	@EqualsAndHashCode.Include
 	private String message;
@@ -24,7 +24,7 @@ public class ResponseException extends Exception {
 		this.message = responseException.message;
 	}
 
-	public ResponseException(HttpStatus status, Integer code, String message) {
+	public ResponseException(HttpStatus status, String code, String message) {
 		this.status = status.value();
 		this.code = code;
 		this.message = message;
@@ -34,4 +34,5 @@ public class ResponseException extends Exception {
 	protected ResponseException clone() {
 		return new ResponseException(this);
 	}
+
 }

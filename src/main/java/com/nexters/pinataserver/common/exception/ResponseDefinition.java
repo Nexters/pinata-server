@@ -8,4 +8,5 @@ public interface ResponseDefinition extends Supplier<ResponseException> {
 	default ResponseException get() {
 		return getResponseException().clone();
 	}
+
 }
