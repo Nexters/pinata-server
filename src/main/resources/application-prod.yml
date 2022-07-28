@@ -9,5 +9,5 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: none
-  server:
-    port: 63458
+server:
+  port: 63458
