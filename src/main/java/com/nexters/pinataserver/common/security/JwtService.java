@@ -3,8 +3,6 @@ package com.nexters.pinataserver.common.security;
 import java.util.Base64;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -24,13 +22,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtService {
 
-	public static final String TOKEN_REGEX = "\\.";
-	public static final Integer ACCESS_EXPIRE = 1 * 1000 * 60 * 60 * 24; // 1일
-
-	@Value("${jwt.secret}")
-	private String SECRET_KEY;
-
-	private final StringRedisTemplate redisTemplate;
+	// TODO 프로퍼티스 파일 추가 예정
+	private static final String TOKEN_REGEX = "\\.";
+	private static final Integer ACCESS_EXPIRE = 30 * 1000 * 60 * 60 * 24;
+	private static final String SECRET_KEY = "pinata";
 
 	public String createAccessToken(String subject) {
 		Date now = new Date();
@@ -77,4 +72,5 @@ public class JwtService {
 		private String exp;
 		private String sub;
 	}
+
 }
