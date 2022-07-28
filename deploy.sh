@@ -1,7 +1,7 @@
 cd /home/ubuntu/app
 
 echo $ Copy Jar File >> /home/ubuntu/app/deploy.log
-cp /home/ubuntu/deploy/*-SNAPSHOT.jar .
+cp /home/ubuntu/app/deploy/*-SNAPSHOT.jar .
 
 BUILD_JAR=$(ls /home/ubuntu/app/*-SNAPSHOT.jar)
 DEPLOY_PATH=/home/ubuntu/app/
