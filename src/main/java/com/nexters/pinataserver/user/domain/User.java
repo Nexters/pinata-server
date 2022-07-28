@@ -9,6 +9,8 @@ import javax.persistence.Table;
 
 import com.nexters.pinataserver.common.domain.AbstractDateTimeEntity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @Entity
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tb_users")
 public class User extends AbstractDateTimeEntity {
 

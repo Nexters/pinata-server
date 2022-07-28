@@ -6,6 +6,5 @@ import lombok.Setter;
 @Setter
 @Getter
 public class SignInRequest {
-	// TODO client 와 상의 후 수정 예정
-	private String accessToken;
+	private Long providerId;
 }

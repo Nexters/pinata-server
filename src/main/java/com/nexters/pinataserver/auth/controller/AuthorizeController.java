@@ -10,12 +10,14 @@ import com.nexters.pinataserver.auth.dto.request.SignUpRequest;
 import com.nexters.pinataserver.auth.dto.response.SignInResponse;
 import com.nexters.pinataserver.auth.dto.response.SignUpResponse;
 import com.nexters.pinataserver.auth.service.AuthService;
+import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
 import com.nexters.pinataserver.common.exception.ResponseException;
 import com.nexters.pinataserver.user.domain.User;
+import com.nexters.pinataserver.user.domain.UserState;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/auth/v1")
+@RequestMapping("/v1/auth")
 @RestController
 @RequiredArgsConstructor
 public class AuthorizeController {
@@ -23,23 +25,24 @@ public class AuthorizeController {
 	private final AuthService authService;
 
 	@PostMapping("/signup")
-	public void signUp(@RequestBody SignUpRequest request) {
+	public CommonApiResponse<SignUpResponse> signUp(@RequestBody SignUpRequest request) {
 		User user = User.builder()
 			.providerId(request.getProviderId())
 			.nickname(request.getNickname())
 			.email(request.getEmail())
 			.profileImageUrl(request.getProfileImageUrl())
+			.state(UserState.ACTIVE)
 			.build();
 		String accessToken = authService.signUp(user);
 		SignUpResponse response = new SignUpResponse(accessToken);
-		// TODO CommonResponse
+		return CommonApiResponse.ok(response);
 	}
 
 	@PostMapping("/signin")
-	public void signIn(@RequestBody SignInRequest request) throws ResponseException {
-		String accessToken = authService.signIn(request.getAccessToken());
+	public CommonApiResponse<SignInResponse> signIn(@RequestBody SignInRequest request) throws ResponseException {
+		String accessToken = authService.signIn(request.getProviderId());
 		SignInResponse response = new SignInResponse(accessToken);
-		// TODO CommonResponse
+		return CommonApiResponse.ok(response);
 	}
 
 }
