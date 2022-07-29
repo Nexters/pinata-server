@@ -3,6 +3,7 @@ package com.nexters.pinataserver.common.security;
 import java.util.Base64;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,10 +23,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtService {
 
-	// TODO 프로퍼티스 파일 추가 예정
+	@Value("${jwt.secret.key}")
+	private static final String SECRET_KEY = "pinata";
+
 	private static final String TOKEN_REGEX = "\\.";
 	private static final Integer ACCESS_EXPIRE = 30 * 1000 * 60 * 60 * 24;
-	private static final String SECRET_KEY = "pinata";
 
 	public String createAccessToken(String subject) {
 		Date now = new Date();

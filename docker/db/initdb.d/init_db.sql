@@ -53,18 +53,18 @@ CREATE TABLE tb_events
     PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 
-# CREATE TABLE tb_users
-# (
-#     id           BIGINT       NOT NULL AUTO_INCREMENT,
-#     created_at        DATETIME,
-#     updated_at        DATETIME,
-#     email             VARCHAR(100) NOT NULL,
-#     nickname          VARCHAR(255),
-#     profile_image_url VARCHAR(255),
-#     provider_id       BIGINT       NOT NULL,
-#     state             VARCHAR(255),
-#     PRIMARY KEY (id)
-# ) ENGINE = InnoDB;
+CREATE TABLE tb_users
+(
+    id           BIGINT       NOT NULL AUTO_INCREMENT,
+    created_at        DATETIME,
+    updated_at        DATETIME,
+    email             VARCHAR(100) NOT NULL,
+    nickname          VARCHAR(255),
+    profile_image_url VARCHAR(255),
+    provider_id       BIGINT       NOT NULL,
+    state             INTEGER,
+    PRIMARY KEY (id)
+) ENGINE = InnoDB;
 
 CREATE TABLE users
 (
