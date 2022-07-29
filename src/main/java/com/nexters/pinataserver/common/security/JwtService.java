@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtService {
 
 	@Value("${jwt.secret.key}")
-	private static final String SECRET_KEY = "pinata";
+	private String SECRET_KEY;
 
 	private static final String TOKEN_REGEX = "\\.";
 	private static final Integer ACCESS_EXPIRE = 30 * 1000 * 60 * 60 * 24;
