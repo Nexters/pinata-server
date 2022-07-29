@@ -27,4 +27,4 @@ echo "> DEPLOY_JAR에 실행 권한 추가 (DEPLOY_JAR 이름: $DEPLOY_JAR)"    
 chmod 755 $DEPLOY_JAR
 
 echo "> DEPLOY_JAR 배포 및 실행"    >> /home/ubuntu/app/deploy.log
-java -jar -Dspring.profiles.active=prod $DEPLOY_JAR >> /home/ubuntu/app/deploy.log 2>/home/ubuntu/app/deploy_err.log &
+nohup java -jar -Dspring.profiles.active=prod $DEPLOY_JAR >> /home/ubuntu/app/deploy.log 2>/home/ubuntu/app/deploy_err.log &
