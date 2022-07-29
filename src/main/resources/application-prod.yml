@@ -11,3 +11,6 @@ spring:
       ddl-auto: none
 server:
   port: 63458
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}

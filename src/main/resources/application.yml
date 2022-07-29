@@ -1,8 +1,6 @@
 spring:
   profiles:
     active: test
-    include:
-      - security
   jpa:
     open-in-view: false
     hibernate:
