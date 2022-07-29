@@ -20,3 +20,11 @@ server:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
+
+ncp:
+  end_point: ${ENDPOINT}
+  region_name: ${REGION_NAME}
+  access_key: ${ACCESS_KEY}
+  secret_key: ${SECRET_KEY}
+  bucket_name: ${BUCKET_NAME}
+  image_folder_name: ${IMAGE_FOLDER_NAME}
