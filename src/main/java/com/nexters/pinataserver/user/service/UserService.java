@@ -22,8 +22,8 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public User getUserByProviderId(Long providerId) throws ResponseException {
-		return userRepository.findUserByProviderId(providerId).orElseThrow(NotFoundException.USER);
+	public User getUserByProviderId(Long id) throws ResponseException {
+		return userRepository.findByProviderId(id).orElseThrow(NotFoundException.USER);
 	}
 
 }

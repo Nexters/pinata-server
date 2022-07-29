@@ -27,7 +27,7 @@ public class JwtService {
 	private String SECRET_KEY;
 
 	private static final String TOKEN_REGEX = "\\.";
-	private static final Integer ACCESS_EXPIRE = 30 * 1000 * 60 * 60 * 24;
+	private static final Integer ACCESS_EXPIRE = 15 * 1000 * 60 * 60 * 24;
 
 	public String createAccessToken(String subject) {
 		Date now = new Date();
@@ -61,7 +61,7 @@ public class JwtService {
 			String payload = new String(Base64.getDecoder().decode(chunks[1]));
 			ObjectMapper mapper = new ObjectMapper();
 			sub = mapper.readValue(payload, Payload.class).getSub();
-		} catch (JsonProcessingException e) {
+		} catch (NullPointerException | JsonProcessingException e) {
 			throw new AuthenticationException(e);
 		}
 
