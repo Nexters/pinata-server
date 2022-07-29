@@ -34,7 +34,7 @@ CREATE TABLE tb_event_items
 
 CREATE TABLE tb_events
 (
-    id             BIGINT       NOT NULL AUTO_INCREMENT,
+    id                   BIGINT       NOT NULL AUTO_INCREMENT,
     created_at           DATETIME,
     updated_at           DATETIME,
     use_flag             BIT          NOT NULL,
@@ -50,6 +50,7 @@ CREATE TABLE tb_events
     participant_count    INTEGER      NOT NULL,
     title                VARCHAR(500) NOT NULL,
     type                 VARCHAR(255),
+    status               VARCHAR(255),
     PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 

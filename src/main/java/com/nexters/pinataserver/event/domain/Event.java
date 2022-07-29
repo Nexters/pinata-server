@@ -54,6 +54,10 @@ public class Event extends AbstractSoftDeletableEntity {
 	@Enumerated(EnumType.STRING)
 	private EventType type;
 
+
+	@Enumerated(EnumType.STRING)
+	private EventStatus status;
+
 	@Column(name = "limit_count", nullable = false)
 	private Integer limitCount;
 
@@ -91,6 +95,7 @@ public class Event extends AbstractSoftDeletableEntity {
 		LocalDateTime openAt,
 		LocalDateTime closeAt,
 		EventType type,
+		EventStatus status,
 		Integer limitCount,
 		Integer hitCount,
 		Integer participantCount,
@@ -106,6 +111,7 @@ public class Event extends AbstractSoftDeletableEntity {
 		this.openAt = openAt;
 		this.closeAt = closeAt;
 		this.type = type;
+		this.status = status;
 		this.limitCount = limitCount;
 		this.hitCount = hitCount;
 		this.participantCount = participantCount;
