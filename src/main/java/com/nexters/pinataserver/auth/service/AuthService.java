@@ -18,15 +18,16 @@ public class AuthService {
 
 	public String signUp(User user) {
 		User currentUser = userService.createUser(user);
-		return jwtService.createAccessToken(currentUser.getProviderId().toString());
+		return jwtService.createAccessToken(currentUser.getEmail());
 	}
 
-	public String signIn(Long providerId) {
-		return jwtService.createAccessToken(providerId.toString());
+	public String signIn(String email) throws ResponseException {
+		User currentUser = userService.getUserByEmail(email);
+		return jwtService.createAccessToken(currentUser.getEmail());
 	}
 
-	public String getUserByProviderId(String providerId) throws ResponseException {
-		return userService.getUserByProviderId(Long.valueOf(providerId)).getProviderId().toString();
+	public User getUserByEmail(String email) throws ResponseException {
+		return userService.getUserByEmail(email);
 	}
 
 }

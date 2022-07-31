@@ -2,12 +2,15 @@ package com.nexters.pinataserver.common.exception;
 
 import org.springframework.http.HttpStatus;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
+@JsonIgnoreProperties({"stackTrace", "cause", "suppressed", "localizedMessage"})
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class ResponseException extends RuntimeException {
+public class ResponseException extends Exception {
 
 	@EqualsAndHashCode.Include
 	private int status;
@@ -18,7 +21,7 @@ public class ResponseException extends RuntimeException {
 	@EqualsAndHashCode.Include
 	private String message;
 
-	private ResponseException(ResponseException responseException) {
+	public ResponseException(ResponseException responseException) {
 		this.status = responseException.status;
 		this.code = responseException.code;
 		this.message = responseException.message;
