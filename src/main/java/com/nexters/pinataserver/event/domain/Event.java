@@ -1,12 +1,12 @@
 package com.nexters.pinataserver.event.domain;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -45,15 +45,11 @@ public class Event extends AbstractSoftDeletableEntity {
 	@Column(name = "title", length = 500, nullable = false)
 	private String title;
 
-	@Column(name = "open_at")
-	private LocalDateTime openAt;
-
-	@Column(name = "close_at")
-	private LocalDateTime closeAt;
+	@Embedded
+	private EventDateTime eventDateTime;
 
 	@Enumerated(EnumType.STRING)
 	private EventType type;
-
 
 	@Enumerated(EnumType.STRING)
 	private EventStatus status;
@@ -88,12 +84,11 @@ public class Event extends AbstractSoftDeletableEntity {
 	)
 	private List<EventItem> eventItems = new ArrayList<>();
 
-	private Event(
+	public Event(
 		Long id,
 		String code,
 		String title,
-		LocalDateTime openAt,
-		LocalDateTime closeAt,
+		EventDateTime eventDateTime,
 		EventType type,
 		EventStatus status,
 		Integer limitCount,
@@ -108,8 +103,7 @@ public class Event extends AbstractSoftDeletableEntity {
 		this.id = id;
 		this.code = code;
 		this.title = title;
-		this.openAt = openAt;
-		this.closeAt = closeAt;
+		this.eventDateTime = eventDateTime;
 		this.type = type;
 		this.status = status;
 		this.limitCount = limitCount;

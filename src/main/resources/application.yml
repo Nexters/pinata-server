@@ -3,6 +3,7 @@ spring:
     active: test
     include:
       - security
+      - storage
   jpa:
     open-in-view: false
     hibernate:
