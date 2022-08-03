@@ -35,6 +35,7 @@ CREATE TABLE tb_event_items
 CREATE TABLE tb_events
 (
     id                   BIGINT       NOT NULL AUTO_INCREMENT,
+    organizer_id         BIGINT       NOT NULL,
     created_at           DATETIME,
     updated_at           DATETIME,
     use_flag             BIT          NOT NULL,
@@ -64,19 +65,6 @@ CREATE TABLE tb_users
     nickname          VARCHAR(255),
     profile_image_url VARCHAR(255),
     provider_id       BIGINT       NOT NULL,
-    state             INTEGER,
-    PRIMARY KEY (id)
-) ENGINE = InnoDB;
-
-CREATE TABLE users
-(
-    id                BIGINT NOT NULL AUTO_INCREMENT,
-    created_at        DATETIME,
-    updated_at        DATETIME,
-    email             VARCHAR(255),
-    nickname          VARCHAR(255),
-    profile_image_url VARCHAR(255),
-    provider_id       BIGINT,
     state             INTEGER,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB;
