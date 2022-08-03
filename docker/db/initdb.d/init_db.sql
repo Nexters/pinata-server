@@ -38,25 +38,26 @@ CREATE TABLE tb_events
     created_at           DATETIME,
     updated_at           DATETIME,
     use_flag             BIT          NOT NULL,
-    close_at             DATETIME,
     code                 VARCHAR(500) NOT NULL,
+    close_at             DATETIME,
+    is_period            BIT,
+    open_at              DATETIME,
     hit_count            INTEGER      NOT NULL,
     hit_image_file_name  VARCHAR(100),
     hit_message          VARCHAR(1000),
     limit_count          INTEGER      NOT NULL,
     miss_image_file_name VARCHAR(100),
     miss_message         VARCHAR(1000),
-    open_at              DATETIME,
     participant_count    INTEGER      NOT NULL,
+    status               VARCHAR(255),
     title                VARCHAR(500) NOT NULL,
     type                 VARCHAR(255),
-    status               VARCHAR(255),
     PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE tb_users
 (
-    id           BIGINT       NOT NULL AUTO_INCREMENT,
+    id                BIGINT       NOT NULL AUTO_INCREMENT,
     created_at        DATETIME,
     updated_at        DATETIME,
     email             VARCHAR(100) NOT NULL,
