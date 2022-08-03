@@ -4,14 +4,14 @@ import org.springframework.http.HttpStatus;
 
 import com.nexters.pinataserver.common.exception.ResponseDefinition;
 import com.nexters.pinataserver.common.exception.ResponseException;
-public enum NotFoundException implements ResponseDefinition {
 
-	USER(HttpStatus.BAD_REQUEST, "ERR0001", "해당 사용자가 존재하지 않습니다."),
-	EVENT(HttpStatus.BAD_REQUEST, "ERR1001", "해당 이벤트가 존재하지 않습니다."),
-	;
+public enum DuplicatedException implements ResponseDefinition {
+
+	EVENT_HISTORY(HttpStatus.BAD_REQUEST, "ERR2003", "이미 참여한 이벤트입니다.");
+
 	private final ResponseException responseException;
 
-	NotFoundException(HttpStatus status, String code, String message) {
+	DuplicatedException(HttpStatus status, String code, String message) {
 		this.responseException = new ResponseException(status, code, message);
 	}
 
