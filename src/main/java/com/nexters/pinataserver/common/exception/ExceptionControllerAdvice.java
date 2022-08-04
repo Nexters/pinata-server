@@ -1,8 +1,8 @@
 package com.nexters.pinataserver.common.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
 import com.nexters.pinataserver.common.exception.e4xx.AuthenticationException;
@@ -11,8 +11,9 @@ import com.nexters.pinataserver.common.exception.e5xx.UnKnownException;
 
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
@@ -26,11 +27,15 @@ public class ExceptionControllerAdvice {
 
 	@ExceptionHandler(ResponseException.class)
 	public CommonApiResponse<ResponseException> processException(ResponseException exception) {
+		log.info("{}", exception);
+
 		return CommonApiResponse.error(exception);
 	}
 
 	@ExceptionHandler(Exception.class)
 	public CommonApiResponse<ResponseException> handleException(Exception exception) {
+		log.info("{}", exception);
+
 		return CommonApiResponse.error(UnKnownException.UNKNOWN.getResponseException());
 	}
 
