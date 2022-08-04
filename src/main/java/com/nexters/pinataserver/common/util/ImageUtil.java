@@ -9,7 +9,7 @@ public class ImageUtil {
 	@Value("${ncp.bucket_name}")
 	private String bucketPath;
 
-	protected String extractImageFileName(String imageUrl) {
+	public String extractImageFileName(String imageUrl) {
 		return imageUrl.replace(bucketPath, "");
 	}
 
