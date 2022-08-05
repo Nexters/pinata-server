@@ -8,8 +8,9 @@ import com.nexters.pinataserver.common.exception.ResponseException;
 public enum EventStatusException implements ResponseDefinition {
 
 	COMPLETE(HttpStatus.BAD_REQUEST, "ERR1002", "이미 완료된 이벤트입니다."),
-	CANCEL(HttpStatus.BAD_REQUEST, "ERR1003", "해당 이벤트가 취소되었습니다."),
+	CANCEL(HttpStatus.BAD_REQUEST, "ERR1003", "해당 이벤트는 취소되었습니다."),
 	;
+
 	private final ResponseException responseException;
 
 	EventStatusException(HttpStatus status, String code, String message) {
