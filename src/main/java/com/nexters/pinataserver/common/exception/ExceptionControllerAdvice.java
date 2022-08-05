@@ -1,7 +1,9 @@
 package com.nexters.pinataserver.common.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
@@ -17,6 +19,23 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public CommonApiResponse<ResponseException> handleMethodArgumentNotValidException(
+		MethodArgumentNotValidException exception) {
+		log.error("{}", exception);
+
+		String firstErrorMessage = exception.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+
+		return CommonApiResponse.error(
+			new ResponseException(
+				HttpStatus.BAD_REQUEST,
+				"METHOD_ARGS_EXCEPTION",
+				firstErrorMessage
+			)
+		);
+	}
 
 	@ExceptionHandler({AuthenticationException.class, JwtException.class, ExpiredAccessTokenException.class})
 	public CommonApiResponse<ResponseException> AuthenticationException(Exception exception) {
