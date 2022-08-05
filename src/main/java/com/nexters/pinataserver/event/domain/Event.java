@@ -54,17 +54,20 @@ public class Event extends AbstractSoftDeletableEntity {
     @Enumerated(EnumType.STRING)
     private EventType type;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
-    private EventStatus status;
+    private EventStatus status = EventStatus.WAIT;
 
     @Column(name = "limit_count", nullable = false)
     private Integer limitCount;
 
+    @Builder.Default
     @Column(name = "hit_count", nullable = false)
-    private Integer hitCount;
+    private Integer hitCount = 0;
 
+    @Builder.Default
     @Column(name = "participant_count", nullable = false)
-    private Integer participantCount;
+    private Integer participantCount = 0;
 
     @Column(name = "hit_image_file_name", length = 100)
     private String hitImageFileName;
@@ -127,6 +130,10 @@ public class Event extends AbstractSoftDeletableEntity {
 
     public void addEventItem(EventItem eventItem) {
         eventItem.changeEvent(this);
+    }
+
+    public void changeStatus(EventStatus eventStatus) {
+        this.status = eventStatus;
     }
 
 }
