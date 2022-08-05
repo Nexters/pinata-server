@@ -2,7 +2,7 @@ package com.nexters.pinataserver.event.controller;
 
 import static com.nexters.pinataserver.event.controller.EventController.*;
 
-import java.time.LocalDateTime;
+import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
-import com.nexters.pinataserver.event.domain.EventStatus;
-import com.nexters.pinataserver.event.domain.EventType;
 import com.nexters.pinataserver.event.dto.request.ParticipateEventRequest;
+import com.nexters.pinataserver.event.dto.request.RegisterEventRequest;
 import com.nexters.pinataserver.event.dto.response.ParticipateEventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
+import com.nexters.pinataserver.event.dto.response.RegisterEventResponse;
+import com.nexters.pinataserver.event.service.EventCreateService;
+import com.nexters.pinataserver.event.service.EventReadService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,9 +32,9 @@ public class EventController {
 
 	public static final String BASE_URI = "/api/v1/events";
 
-	// private final EventReadService eventReadService;
+	private final EventReadService eventReadService;
 
-	// private final EventCreateService eventCreateService;
+	private final EventCreateService eventCreateService;
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/participate/{eventCode}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,22 +42,7 @@ public class EventController {
 		@PathVariable("eventCode") String eventCode
 		// @AuthenticationPrincipal Long userId
 	) {
-		LocalDateTime now = LocalDateTime.now();
-		ReadCurrentParticipateEventResponse response = ReadCurrentParticipateEventResponse.builder()
-			.code(eventCode)
-			.type(EventType.FCFS)
-			.status(EventStatus.PROCESS)
-			.isPeriod(true)
-			.openAt(now.plusSeconds(20))
-			.closeAt(now.plusHours(1))
-			.hitImageUrl("https://kr.object.ncloudstorage.com/pinata-bucket/images/hit-image.jpeg")
-			.hitMessage("축하합니다~ 남은 넥스터즈 기간도 화이팅~!")
-			.missImageUrl("https://kr.object.ncloudstorage.com/pinata-bucket/images/miss-image.jpeg")
-			.missMessage("메롱~~~~")
-			.title("넥스터즈 21기 깜짝 선물 3분께 드립니다.")
-			.build();
-
-		// ReadCurrentParticipateEventResponse response = eventReadService.getParticipateEvent(1L, eventCode);
+		ReadCurrentParticipateEventResponse response = eventReadService.getParticipateEvent(1L, eventCode);
 
 		return CommonApiResponse.<ReadCurrentParticipateEventResponse>ok(response);
 	}
@@ -82,17 +69,19 @@ public class EventController {
 		return CommonApiResponse.<ParticipateEventResponse>ok(response);
 	}
 
-	// @ResponseStatus(HttpStatus.OK)
-	// @PostMapping(
-	// 	produces = MediaType.APPLICATION_JSON_VALUE,
-	// 	consumes = MediaType.APPLICATION_JSON_VALUE
-	// )
-	// public CommonApiResponse<RegisterEventResponse> registerEvent(
-	// 	@RequestBody RegisterEventRequest request
-	// ) {
-	// 	RegisterEventResponse response = eventCreateService.createEvent(request);
-	//
-	// 	return CommonApiResponse.<RegisterEventResponse>ok(response);
-	// }
+	@ResponseStatus(HttpStatus.OK)
+	@PostMapping(
+		produces = MediaType.APPLICATION_JSON_VALUE,
+		consumes = MediaType.APPLICATION_JSON_VALUE
+	)
+	public CommonApiResponse<RegisterEventResponse> registerEvent(
+		@Valid @RequestBody RegisterEventRequest request
+		// @AuthenticationPrincipal Long userId
+	) {
+		Long userId = 1L;
+		RegisterEventResponse response = eventCreateService.createEvent(userId, request);
+
+		return CommonApiResponse.<RegisterEventResponse>ok(response);
+	}
 
 }
