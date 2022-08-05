@@ -129,4 +129,8 @@ public class Event extends AbstractSoftDeletableEntity {
         eventItem.changeEvent(this);
     }
 
+    public void changeStatus(EventStatus eventStatus) {
+        this.status = eventStatus;
+    }
+
 }
