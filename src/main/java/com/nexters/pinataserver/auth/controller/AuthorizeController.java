@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nexters.pinataserver.auth.dto.request.SignUpRequest;
+import com.nexters.pinataserver.auth.dto.request.SignInRequest;
 import com.nexters.pinataserver.auth.dto.response.SignInResponse;
 import com.nexters.pinataserver.auth.service.AuthService;
 import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
@@ -23,7 +23,7 @@ public class AuthorizeController {
 	private final AuthService authService;
 
 	@PostMapping("/signin")
-	public CommonApiResponse<SignInResponse> signUp(@RequestBody SignUpRequest request) throws ResponseException {
+	public CommonApiResponse<SignInResponse> signUp(@RequestBody SignInRequest request) throws ResponseException {
 		if (!authService.existsByEmail(request.getEmail())) {
 			User user = User.builder()
 				.providerId(request.getProviderId())
