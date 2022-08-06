@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
+import com.nexters.pinataserver.common.security.AuthenticationPrincipal;
 import com.nexters.pinataserver.event.dto.request.ParticipateEventRequest;
 import com.nexters.pinataserver.event.dto.response.ParticipateEventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
@@ -35,9 +36,10 @@ public class EventController {
 	@GetMapping(value = "/participate/{eventCode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CommonApiResponse<ReadCurrentParticipateEventResponse> readCurrentParticipateEvent(
 		@PathVariable("eventCode") String eventCode
-		// @AuthenticationPrincipal Long userId
+		,@AuthenticationPrincipal Long userId
+
 	) {
-		ReadCurrentParticipateEventResponse response = eventReadService.getParticipateEvent(1L, eventCode);
+		ReadCurrentParticipateEventResponse response = eventReadService.getParticipateEvent(userId, eventCode);
 
 		return CommonApiResponse.<ReadCurrentParticipateEventResponse>ok(response);
 	}
