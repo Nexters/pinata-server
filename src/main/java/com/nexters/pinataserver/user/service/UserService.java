@@ -22,8 +22,18 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public User getUserByProviderId(Long id) throws ResponseException {
-		return userRepository.findByProviderId(id).orElseThrow(NotFoundException.USER);
+	public User getUserByEmail(String email) throws ResponseException {
+		return userRepository.findByEmail(email).orElseThrow(NotFoundException.USER);
+	}
+
+	@Transactional(readOnly = true)
+	public boolean existsById(Long userId) {
+		return userRepository.existsById(userId);
+	}
+
+	@Transactional(readOnly = true)
+	public boolean existsByEmail(String email) {
+		return userRepository.existsByEmail(email);
 	}
 
 }

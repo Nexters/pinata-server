@@ -24,8 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(jwtInterceptor)
 			.addPathPatterns("/api/**")
-		.excludePathPatterns("/api/ping")
-		;
+			.excludePathPatterns("/api/ping");
 	}
 
 	@Override
@@ -36,9 +35,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-				.allowedOrigins("http://localhost:3000", "http://127.0.0.1:3000")
-				.allowedMethods("GET", "POST","PUT","DELETE","OPTIONS")
-				.maxAge(3000);
+			.allowedOrigins("http://localhost:3000", "http://127.0.0.1:3000")
+			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+			.maxAge(3000);
 	}
 
 }
