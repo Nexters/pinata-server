@@ -40,7 +40,7 @@ public class AuthorizeController {
 
 	@PostMapping("/signin")
 	public CommonApiResponse<SignInResponse> signIn(@RequestBody SignInRequest request) throws ResponseException {
-		String accessToken = authService.signIn(request.getProviderId());
+		String accessToken = authService.signIn(request.getEmail());
 		SignInResponse response = new SignInResponse(accessToken);
 		return CommonApiResponse.ok(response);
 	}

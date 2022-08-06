@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import com.nexters.pinataserver.common.exception.ResponseException;
 import com.nexters.pinataserver.common.exception.e4xx.EventTimeException;
 
 import lombok.Builder;
@@ -27,25 +28,25 @@ public class EventDateTime {
 	private LocalDateTime closeAt;
 
 	@Builder
-	public EventDateTime(Boolean isPeriod, LocalDateTime openAt, LocalDateTime closeAt) {
+	public EventDateTime(Boolean isPeriod, LocalDateTime openAt, LocalDateTime closeAt) throws ResponseException {
 		validate(isPeriod, openAt, closeAt);
 		this.isPeriod = isPeriod;
 		this.openAt = openAt;
 		this.closeAt = closeAt;
 	}
 
-	private void validate(Boolean isPeriod, LocalDateTime openAt, LocalDateTime closeAt) {
+	private void validate(Boolean isPeriod, LocalDateTime openAt, LocalDateTime closeAt) throws ResponseException {
 		checkIsPeriod(isPeriod, openAt, closeAt);
 		checkOpenCloseDateTimeValidation(openAt, closeAt);
 	}
 
-	private void checkOpenCloseDateTimeValidation(LocalDateTime openAt, LocalDateTime closeAt) {
+	private void checkOpenCloseDateTimeValidation(LocalDateTime openAt, LocalDateTime closeAt) throws ResponseException {
 		if (openAt.isAfter(closeAt)) {
 			throw EventTimeException.INVALID_INPUT.get();
 		}
 	}
 
-	private void checkIsPeriod(Boolean isPeriod, LocalDateTime openAt, LocalDateTime closeAt) {
+	private void checkIsPeriod(Boolean isPeriod, LocalDateTime openAt, LocalDateTime closeAt) throws ResponseException {
 		if (isPeriod && (Objects.isNull(openAt) || Objects.isNull(closeAt))) {
 			throw EventTimeException.INVALID_INPUT.get();
 		}

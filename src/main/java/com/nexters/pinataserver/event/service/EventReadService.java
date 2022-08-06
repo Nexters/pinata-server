@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nexters.pinataserver.common.exception.ResponseException;
 import com.nexters.pinataserver.common.exception.e4xx.DuplicatedException;
 import com.nexters.pinataserver.common.exception.e4xx.EventStatusException;
 import com.nexters.pinataserver.common.exception.e4xx.EventTimeException;
@@ -30,7 +31,7 @@ public class EventReadService {
 
 	private final ImageUtil imageUtil;
 
-	public ReadCurrentParticipateEventResponse getParticipateEvent(Long participantId, String eventCode) {
+	public ReadCurrentParticipateEventResponse getParticipateEvent(Long participantId, String eventCode) throws ResponseException {
 
 		// 이벤트 조회
 		Event foundEvent = eventRepository.findByCode(eventCode)

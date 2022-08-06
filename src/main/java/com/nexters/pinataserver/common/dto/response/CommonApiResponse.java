@@ -8,7 +8,7 @@ import com.nexters.pinataserver.common.exception.ResponseException;
 import lombok.Getter;
 
 @Getter
-public class CommonApiResponse <T> {
+public class CommonApiResponse<T> {
 
 	private final ApiResult result;
 
@@ -30,6 +30,5 @@ public class CommonApiResponse <T> {
 	public static CommonApiResponse<ResponseException> error(ResponseException exception) {
 		return new CommonApiResponse<>(ApiResult.FAIL, exception);
 	}
-
 
 }

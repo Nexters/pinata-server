@@ -1,16 +1,23 @@
 package com.nexters.pinataserver.common.exception.e4xx;
 
-public class AuthenticationException extends RuntimeException {
+import org.springframework.http.HttpStatus;
 
-	public AuthenticationException() {
+import com.nexters.pinataserver.common.exception.ResponseDefinition;
+import com.nexters.pinataserver.common.exception.ResponseException;
+
+public enum AuthenticationException implements ResponseDefinition {
+
+	UNAUTHORIZATION(HttpStatus.BAD_REQUEST, "ERR0002", "사용자 인증 실패");
+
+	private final ResponseException responseException;
+
+	AuthenticationException(HttpStatus status, String code, String message) {
+		this.responseException = new ResponseException(status, code, message);
 	}
 
-	public AuthenticationException(Throwable t) {
-		super(t);
-	}
-
-	public AuthenticationException(String msg, Throwable cause) {
-		super(msg, cause);
+	@Override
+	public ResponseException getResponseException() {
+		return responseException;
 	}
 
 }
