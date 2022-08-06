@@ -2,6 +2,7 @@ package com.nexters.pinataserver.event.controller;
 
 import static com.nexters.pinataserver.event.controller.EventController.*;
 
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
 import com.nexters.pinataserver.common.security.AuthenticationPrincipal;
 import com.nexters.pinataserver.event.dto.request.ParticipateEventRequest;
+import com.nexters.pinataserver.event.dto.request.RegisterEventRequest;
 import com.nexters.pinataserver.event.dto.response.ParticipateEventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
+import com.nexters.pinataserver.event.dto.response.RegisterEventResponse;
+import com.nexters.pinataserver.event.service.EventCreateService;
 import com.nexters.pinataserver.event.service.EventReadService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,14 +34,13 @@ public class EventController {
 
 	private final EventReadService eventReadService;
 
-	// private final EventCreateService eventCreateService;
+	private final EventCreateService eventCreateService;
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/participate/{eventCode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CommonApiResponse<ReadCurrentParticipateEventResponse> readCurrentParticipateEvent(
-		@PathVariable("eventCode") String eventCode
-		,@AuthenticationPrincipal Long userId
-
+		@PathVariable("eventCode") String eventCode,
+		@AuthenticationPrincipal Long userId
 	) {
 		ReadCurrentParticipateEventResponse response = eventReadService.getParticipateEvent(userId, eventCode);
 
@@ -66,17 +69,18 @@ public class EventController {
 		return CommonApiResponse.<ParticipateEventResponse>ok(response);
 	}
 
-	// @ResponseStatus(HttpStatus.OK)
-	// @PostMapping(
-	// 	produces = MediaType.APPLICATION_JSON_VALUE,
-	// 	consumes = MediaType.APPLICATION_JSON_VALUE
-	// )
-	// public CommonApiResponse<RegisterEventResponse> registerEvent(
-	// 	@RequestBody RegisterEventRequest request
-	// ) {
-	// 	RegisterEventResponse response = eventCreateService.createEvent(request);
-	//
-	// 	return CommonApiResponse.<RegisterEventResponse>ok(response);
-	// }
+	@ResponseStatus(HttpStatus.OK)
+	@PostMapping(
+		produces = MediaType.APPLICATION_JSON_VALUE,
+		consumes = MediaType.APPLICATION_JSON_VALUE
+	)
+	public CommonApiResponse<RegisterEventResponse> registerEvent(
+		@Valid @RequestBody RegisterEventRequest request,
+		@AuthenticationPrincipal Long userId
+	) {
+		RegisterEventResponse response = eventCreateService.createEvent(userId, request);
+
+		return CommonApiResponse.<RegisterEventResponse>ok(response);
+	}
 
 }

@@ -17,6 +17,7 @@ public enum EventStatusException implements ResponseDefinition {
 		this.responseException = new ResponseException(status, code, message);
 	}
 
+
 	@Override
 	public ResponseException getResponseException() {
 		return responseException;
