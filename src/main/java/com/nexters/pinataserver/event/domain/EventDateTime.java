@@ -53,7 +53,24 @@ public class EventDateTime {
 	}
 
 	public boolean isCanNotParticipate(LocalDateTime now) {
-		return now.isAfter(closeAt) || now.isBefore(openAt);
+		if (isPeriod) {
+			return now.isAfter(closeAt) || now.isBefore(openAt);
+		}
+
+		return now.isAfter(closeAt);
+	}
+
+	public boolean isBeforeOpenDateTime(LocalDateTime now) {
+		// 시작 시간이 없으면 현재 시작중임
+		if (!isPeriod) {
+			return true;
+		}
+
+		return now.isBefore(openAt);
+	}
+
+	public boolean isAfterCloseDateTime(LocalDateTime now) {
+		return now.isAfter(closeAt);
 	}
 
 }

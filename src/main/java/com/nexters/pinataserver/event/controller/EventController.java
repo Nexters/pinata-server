@@ -2,8 +2,6 @@ package com.nexters.pinataserver.event.controller;
 
 import static com.nexters.pinataserver.event.controller.EventController.*;
 
-import java.time.LocalDateTime;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +13,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
-import com.nexters.pinataserver.event.domain.EventStatus;
-import com.nexters.pinataserver.event.domain.EventType;
+import com.nexters.pinataserver.common.security.AuthenticationPrincipal;
 import com.nexters.pinataserver.event.dto.request.ParticipateEventRequest;
 import com.nexters.pinataserver.event.dto.response.ParticipateEventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
+import com.nexters.pinataserver.event.service.EventReadService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +28,7 @@ public class EventController {
 
 	public static final String BASE_URI = "/api/v1/events";
 
-	// private final EventReadService eventReadService;
+	private final EventReadService eventReadService;
 
 	// private final EventCreateService eventCreateService;
 
@@ -38,24 +36,10 @@ public class EventController {
 	@GetMapping(value = "/participate/{eventCode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CommonApiResponse<ReadCurrentParticipateEventResponse> readCurrentParticipateEvent(
 		@PathVariable("eventCode") String eventCode
-		// @AuthenticationPrincipal Long userId
-	) {
-		LocalDateTime now = LocalDateTime.now();
-		ReadCurrentParticipateEventResponse response = ReadCurrentParticipateEventResponse.builder()
-			.code(eventCode)
-			.type(EventType.FCFS)
-			.status(EventStatus.PROCESS)
-			.isPeriod(true)
-			.openAt(now.plusSeconds(20))
-			.closeAt(now.plusHours(1))
-			.hitImageUrl("https://kr.object.ncloudstorage.com/pinata-bucket/images/hit-image.jpeg")
-			.hitMessage("축하합니다~ 남은 넥스터즈 기간도 화이팅~!")
-			.missImageUrl("https://kr.object.ncloudstorage.com/pinata-bucket/images/miss-image.jpeg")
-			.missMessage("메롱~~~~")
-			.title("넥스터즈 21기 깜짝 선물 3분께 드립니다.")
-			.build();
+		,@AuthenticationPrincipal Long userId
 
-		// ReadCurrentParticipateEventResponse response = eventReadService.getParticipateEvent(1L, eventCode);
+	) {
+		ReadCurrentParticipateEventResponse response = eventReadService.getParticipateEvent(userId, eventCode);
 
 		return CommonApiResponse.<ReadCurrentParticipateEventResponse>ok(response);
 	}

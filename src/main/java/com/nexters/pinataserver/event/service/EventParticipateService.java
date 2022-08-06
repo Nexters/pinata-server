@@ -1,11 +1,11 @@
 package com.nexters.pinataserver.event.service;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nexters.pinataserver.common.exception.ResponseException;
 import com.nexters.pinataserver.common.exception.e4xx.DuplicatedException;
 import com.nexters.pinataserver.common.exception.e4xx.EventStatusException;
 import com.nexters.pinataserver.common.exception.e4xx.EventTimeException;
@@ -13,35 +13,108 @@ import com.nexters.pinataserver.common.exception.e4xx.NotFoundException;
 import com.nexters.pinataserver.common.util.ImageUtil;
 import com.nexters.pinataserver.event.domain.Event;
 import com.nexters.pinataserver.event.domain.EventDateTime;
+import com.nexters.pinataserver.event.domain.EventItem;
 import com.nexters.pinataserver.event.domain.EventRepository;
 import com.nexters.pinataserver.event.domain.EventStatus;
-import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
+import com.nexters.pinataserver.event.domain.EventType;
+import com.nexters.pinataserver.event.dto.response.ParticipateEventResponse;
+import com.nexters.pinataserver.event_history.domain.EventHistory;
 import com.nexters.pinataserver.event_history.domain.EventHistoryRepository;
+import com.nexters.pinataserver.user.domain.User;
+import com.nexters.pinataserver.user.domain.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class EventReadService {
+@Transactional
+public class EventParticipateService {
 
 	private final EventRepository eventRepository;
 
 	private final EventHistoryRepository eventHistoryRepository;
 
+	private final UserRepository userRepository;
+
 	private final ImageUtil imageUtil;
 
-	@Transactional
-	public ReadCurrentParticipateEventResponse getParticipateEvent(Long participantId, String eventCode) {
+
+	public ParticipateEventResponse participateEvent(Long participantId, String eventCode) {
+
+		// 참가자 조회
+		User participant = userRepository.findById(participantId)
+			.orElseThrow(NotFoundException.USER);
 
 		// 이벤트 조회
-		Event foundEvent = eventRepository.findByCode(eventCode)
+		Event foundEvent = eventRepository.findByCodeForUpdate(eventCode)
 			.orElseThrow(NotFoundException.EVENT);
 
 		// 이벤트 참가 가능한 이벤트인지 검증
 		validateCanParticipate(participantId, foundEvent);
 
-		return convertToReadCurrentParticipateEventResponse(foundEvent);
+		// 게임 유형별로 당첨여부 판단
+		EventType eventType = foundEvent.getType();
+		EventItem hitEventItem = null;
+		boolean isHit = false;
+		if (eventType.isFCFS()) {
+
+			if (foundEvent.getHitCount() <= foundEvent.getLimitCount()) {
+				foundEvent.hit();
+				isHit = true;
+				hitEventItem = foundEvent.getHitEventItem();
+			} else{
+				foundEvent.miss();
+			}
+
+		} else if (eventType.isRANDOM()) {
+			int bound = 100;
+			int hitPercentage = 30;
+			Random random = new Random();
+			int randomNumber = random.nextInt(bound);
+			isHit = randomNumber <= hitPercentage;
+			if (isHit) {
+				hitEventItem = foundEvent.getHitEventItem();
+			}
+			// 당첨은 됐는데 상품이 없다면? -> 탈락처리
+			if (isHit && hitEventItem == null) {
+				isHit = false;
+			}
+		}
+
+		// 이벤트 참여 기록 저장
+		EventHistory eventHistory = EventHistory.builder()
+			.eventId(foundEvent.getId())
+			.eventItemId(hitEventItem != null ? hitEventItem.getId() : null)
+			.title(foundEvent.getTitle())
+			.participantId(participant.getId())
+			.participantName(participant.getNickname())
+			.participantEmail(participant.getEmail())
+			.isHit(isHit)
+			.build();
+		eventHistoryRepository.save(eventHistory);
+
+		// 반환
+		if (isHit) {
+			return ParticipateEventResponse.builder()
+				.result(isHit)
+				.code(foundEvent.getCode())
+				.resultMessage(foundEvent.getHitMessage())
+				.resultImageURL(imageUtil.getFullImageUrl(foundEvent.getHitImageFileName()))
+				.itemTitle(hitEventItem.getTitle())
+				.itemImageUrl(imageUtil.getFullImageUrl(hitEventItem.getImageFileName()))
+				.build();
+		}
+
+		return ParticipateEventResponse.builder()
+			.result(isHit)
+			.code(foundEvent.getCode())
+			.resultMessage(foundEvent.getMissMessage())
+			.resultImageURL(imageUtil.getFullImageUrl(foundEvent.getMissImageFileName()))
+			.itemTitle(null)
+			.itemImageUrl(null)
+			.build();
+
+
 	}
 
 	private void validateCanParticipate(Long participantId, Event foundEvent) {
@@ -107,26 +180,6 @@ public class EventReadService {
 		if (status.isCancel()) {
 			throw EventStatusException.CANCEL.get();
 		}
-	}
-
-	private ReadCurrentParticipateEventResponse convertToReadCurrentParticipateEventResponse(Event foundEvent) {
-		return ReadCurrentParticipateEventResponse.builder()
-			.title(foundEvent.getTitle())
-			.code(foundEvent.getCode())
-			.status(foundEvent.getStatus())
-			.type(foundEvent.getType())
-			.hitMessage(foundEvent.getHitMessage())
-			.hitImageUrl(
-				imageUtil.getFullImageUrl(foundEvent.getHitImageFileName())
-			)
-			.missMessage(foundEvent.getMissMessage())
-			.missImageUrl(
-				imageUtil.getFullImageUrl(foundEvent.getMissImageFileName())
-			)
-			.isPeriod(foundEvent.getEventDateTime().getIsPeriod())
-			.openAt(foundEvent.getEventDateTime().getOpenAt())
-			.closeAt(foundEvent.getEventDateTime().getCloseAt())
-			.build();
 	}
 
 }

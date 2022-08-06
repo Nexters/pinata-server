@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @JsonIgnoreProperties({"stackTrace", "cause", "suppressed", "localizedMessage"})
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class ResponseException extends Exception {
+public class ResponseException extends RuntimeException {
 
 	@EqualsAndHashCode.Include
 	private int status;
