@@ -37,24 +37,15 @@ public class ExceptionControllerAdvice {
 		);
 	}
 
-	@ExceptionHandler({AuthenticationException.class, JwtException.class, ExpiredAccessTokenException.class})
-	public CommonApiResponse<ResponseException> AuthenticationException(Exception exception) {
-		ResponseException responseException = new ResponseException(HttpStatus.BAD_REQUEST,
-			HttpStatus.BAD_REQUEST.toString(), "사용자 인증 실패");
-		return CommonApiResponse.error(responseException);
-	}
-
 	@ExceptionHandler(ResponseException.class)
 	public CommonApiResponse<ResponseException> processException(ResponseException exception) {
 		log.info("{}", exception);
-
 		return CommonApiResponse.error(exception);
 	}
 
 	@ExceptionHandler(Exception.class)
 	public CommonApiResponse<ResponseException> handleException(Exception exception) {
 		log.info("{}", exception);
-
 		return CommonApiResponse.error(UnKnownException.UNKNOWN.getResponseException());
 	}
 

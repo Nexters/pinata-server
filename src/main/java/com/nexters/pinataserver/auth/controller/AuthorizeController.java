@@ -1,5 +1,7 @@
 package com.nexters.pinataserver.auth.controller;
 
+import static com.nexters.pinataserver.common.exception.e4xx.DuplicatedException.*;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +27,11 @@ public class AuthorizeController {
 	private final AuthService authService;
 
 	@PostMapping("/signup")
-	public CommonApiResponse<SignUpResponse> signUp(@RequestBody SignUpRequest request) {
+	public CommonApiResponse<SignUpResponse> signUp(@RequestBody SignUpRequest request) throws ResponseException {
+		if (authService.existsByEmail(request.getEmail())) {
+			throw new ResponseException(EMAIL.get());
+		}
+
 		User user = User.builder()
 			.providerId(request.getProviderId())
 			.nickname(request.getNickname())
@@ -33,6 +39,7 @@ public class AuthorizeController {
 			.profileImageUrl(request.getProfileImageUrl())
 			.state(UserState.ACTIVE)
 			.build();
+
 		String accessToken = authService.signUp(user);
 		SignUpResponse response = new SignUpResponse(accessToken);
 		return CommonApiResponse.ok(response);
@@ -40,7 +47,7 @@ public class AuthorizeController {
 
 	@PostMapping("/signin")
 	public CommonApiResponse<SignInResponse> signIn(@RequestBody SignInRequest request) throws ResponseException {
-		String accessToken = authService.signIn(request.getProviderId());
+		String accessToken = authService.signIn(request.getEmail());
 		SignInResponse response = new SignInResponse(accessToken);
 		return CommonApiResponse.ok(response);
 	}

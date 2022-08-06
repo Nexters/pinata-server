@@ -7,6 +7,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import com.nexters.pinataserver.common.exception.ResponseException;
 import com.nexters.pinataserver.utils.HeaderUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,9 @@ public class AuthenticationArgumentResolver implements HandlerMethodArgumentReso
 
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws ResponseException {
 		String accessToken = HeaderUtils.getAccessToken(webRequest);
-		return jwtService.decode(accessToken);
+		return Long.valueOf(jwtService.decode(accessToken));
 	}
 
 }

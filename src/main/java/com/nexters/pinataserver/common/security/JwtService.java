@@ -1,5 +1,7 @@
 package com.nexters.pinataserver.common.security;
 
+import static com.nexters.pinataserver.common.exception.e4xx.AuthenticationException.*;
+
 import java.util.Base64;
 import java.util.Date;
 
@@ -7,13 +9,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nexters.pinataserver.common.exception.e4xx.AuthenticationException;
+import com.nexters.pinataserver.common.exception.ResponseException;
 import com.nexters.pinataserver.common.exception.e4xx.ExpiredAccessTokenException;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Data;
@@ -40,7 +40,7 @@ public class JwtService {
 			.compact();
 	}
 
-	public void verifyAccessToken(String token) {
+	public void verifyAccessToken(String token) throws ResponseException {
 		try {
 			Jwts.parser()
 				.setSigningKey(SECRET_KEY)
@@ -48,12 +48,12 @@ public class JwtService {
 		} catch (ExpiredJwtException e) {
 			String sub = decode(token);
 			throw new ExpiredAccessTokenException(e, sub);
-		} catch (JwtException | IllegalArgumentException e) {
-			new AuthenticationException(e);
+		} catch (Exception e) {
+			throw new ResponseException(UNAUTHORIZATION.get());
 		}
 	}
 
-	public String decode(String token) {
+	public String decode(String token) throws ResponseException {
 		String sub = "";
 
 		try {
@@ -61,8 +61,8 @@ public class JwtService {
 			String payload = new String(Base64.getDecoder().decode(chunks[1]));
 			ObjectMapper mapper = new ObjectMapper();
 			sub = mapper.readValue(payload, Payload.class).getSub();
-		} catch (NullPointerException | JsonProcessingException e) {
-			throw new AuthenticationException(e);
+		} catch (Exception e) {
+			throw new ResponseException(UNAUTHORIZATION.get());
 		}
 
 		return sub;

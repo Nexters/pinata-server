@@ -6,8 +6,8 @@ import com.nexters.pinataserver.common.exception.ResponseDefinition;
 import com.nexters.pinataserver.common.exception.ResponseException;
 
 public enum DuplicatedException implements ResponseDefinition {
-
-	EVENT_HISTORY(HttpStatus.BAD_REQUEST, "ERR1001", "이미 참여한 이벤트입니다.");
+	EVENT_HISTORY(HttpStatus.BAD_REQUEST, "ERR2003", "이미 참여한 이벤트입니다."),
+	EMAIL(HttpStatus.BAD_REQUEST, "ERR2004", "이미 가입한 사용자입니다.");
 
 	private final ResponseException responseException;
 

@@ -7,4 +7,7 @@ import lombok.Setter;
 @Getter
 public class SignInRequest {
 	private Long providerId;
+	private String email;
+	private String nickname;
+	private String profileImageUrl;
 }
