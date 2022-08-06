@@ -30,4 +30,8 @@ public class AuthService {
 		return userService.existsById(userId);
 	}
 
+	public boolean existsByEmail(String email) {
+		return userService.existsByEmail(email);
+	}
+
 }

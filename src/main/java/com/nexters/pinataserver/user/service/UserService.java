@@ -31,4 +31,9 @@ public class UserService {
 		return userRepository.existsById(userId);
 	}
 
+	@Transactional(readOnly = true)
+	public boolean existsByEmail(String email) {
+		return userRepository.existsByEmail(email);
+	}
+
 }
