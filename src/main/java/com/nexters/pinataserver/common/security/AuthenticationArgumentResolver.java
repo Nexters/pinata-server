@@ -27,7 +27,7 @@ public class AuthenticationArgumentResolver implements HandlerMethodArgumentReso
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws ResponseException {
 		String accessToken = HeaderUtils.getAccessToken(webRequest);
-		return jwtService.decode(accessToken);
+		return Long.valueOf(jwtService.decode(accessToken));
 	}
 
 }
