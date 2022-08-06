@@ -26,4 +26,9 @@ public class UserService {
 		return userRepository.findByEmail(email).orElseThrow(NotFoundException.USER);
 	}
 
+	@Transactional(readOnly = true)
+	public boolean existsById(Long userId) {
+		return userRepository.existsById(userId);
+	}
+
 }

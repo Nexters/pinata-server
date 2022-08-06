@@ -18,16 +18,16 @@ public class AuthService {
 
 	public String signUp(User user) {
 		User currentUser = userService.createUser(user);
-		return jwtService.createAccessToken(currentUser.getEmail());
+		return jwtService.createAccessToken(currentUser.getId().toString());
 	}
 
 	public String signIn(String email) throws ResponseException {
 		User currentUser = userService.getUserByEmail(email);
-		return jwtService.createAccessToken(currentUser.getEmail());
+		return jwtService.createAccessToken(currentUser.getId().toString());
 	}
 
-	public User getUserByEmail(String email) throws ResponseException {
-		return userService.getUserByEmail(email);
+	public boolean existsById(Long userId) {
+		return userService.existsById(userId);
 	}
 
 }

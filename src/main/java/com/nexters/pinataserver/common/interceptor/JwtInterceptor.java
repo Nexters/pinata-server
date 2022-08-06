@@ -11,13 +11,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import com.nexters.pinataserver.auth.service.AuthService;
 import com.nexters.pinataserver.common.exception.ResponseException;
 import com.nexters.pinataserver.common.security.JwtService;
-import com.nexters.pinataserver.user.domain.User;
 import com.nexters.pinataserver.utils.HeaderUtils;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtInterceptor implements HandlerInterceptor {
@@ -30,14 +27,9 @@ public class JwtInterceptor implements HandlerInterceptor {
 		String accessToken = HeaderUtils.getAccessToken(request);
 		jwtService.verifyAccessToken(accessToken);
 
-		String email = jwtService.decode(accessToken);
+		Long userId = Long.parseLong(jwtService.decode(accessToken));
 
-		User user = authService.getUserByEmail(email);
-
-		log.error(email + " " + user.getEmail());
-
-		if (!email.equals(authService.getUserByEmail(email).getEmail())) {
-			log.error(email + " " + authService.getUserByEmail(email).getEmail());
+		if (!authService.existsById(userId)) {
 			throw new ResponseException(UNAUTHORIZATION.get());
 		}
 
