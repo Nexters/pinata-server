@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ReadCurrentParticipateEvent {
+public class ReadCurrentParticipateEventResponse {
 
 	private final String title;
 
@@ -38,7 +38,7 @@ public class ReadCurrentParticipateEvent {
 	private final LocalDateTime closeAt;
 
 	@Builder
-	public ReadCurrentParticipateEvent(
+	public ReadCurrentParticipateEventResponse(
 		String title,
 		String code,
 		EventType type,
@@ -63,4 +63,5 @@ public class ReadCurrentParticipateEvent {
 		this.openAt = openAt;
 		this.closeAt = closeAt;
 	}
+
 }

@@ -1,36 +1,47 @@
 package com.nexters.pinataserver.event.controller;
 
-import static com.nexters.pinataserver.event.controller.EventReadController.*;
+import static com.nexters.pinataserver.event.controller.EventController.*;
 
 import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
 import com.nexters.pinataserver.event.domain.EventStatus;
 import com.nexters.pinataserver.event.domain.EventType;
 import com.nexters.pinataserver.event.dto.request.ParticipateEventRequest;
 import com.nexters.pinataserver.event.dto.response.ParticipateEventResponse;
-import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEvent;
+import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(BASE_URI)
-public class EventReadController {
+public class EventController {
 
 	public static final String BASE_URI = "/api/v1/events";
 
+	// private final EventReadService eventReadService;
+
+	// private final EventCreateService eventCreateService;
+
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/participate/{eventCode}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public CommonApiResponse<ReadCurrentParticipateEvent> readCurrentParticipateEvent(
+	public CommonApiResponse<ReadCurrentParticipateEventResponse> readCurrentParticipateEvent(
 		@PathVariable("eventCode") String eventCode
+		// @AuthenticationPrincipal Long userId
 	) {
 		LocalDateTime now = LocalDateTime.now();
-		ReadCurrentParticipateEvent response = ReadCurrentParticipateEvent.builder()
+		ReadCurrentParticipateEventResponse response = ReadCurrentParticipateEventResponse.builder()
 			.code(eventCode)
 			.type(EventType.FCFS)
 			.status(EventStatus.PROCESS)
@@ -44,7 +55,9 @@ public class EventReadController {
 			.title("넥스터즈 21기 깜짝 선물 3분께 드립니다.")
 			.build();
 
-		return CommonApiResponse.<ReadCurrentParticipateEvent>ok(response);
+		// ReadCurrentParticipateEventResponse response = eventReadService.getParticipateEvent(1L, eventCode);
+
+		return CommonApiResponse.<ReadCurrentParticipateEventResponse>ok(response);
 	}
 
 	@ResponseStatus(HttpStatus.OK)
@@ -68,5 +81,18 @@ public class EventReadController {
 
 		return CommonApiResponse.<ParticipateEventResponse>ok(response);
 	}
+
+	// @ResponseStatus(HttpStatus.OK)
+	// @PostMapping(
+	// 	produces = MediaType.APPLICATION_JSON_VALUE,
+	// 	consumes = MediaType.APPLICATION_JSON_VALUE
+	// )
+	// public CommonApiResponse<RegisterEventResponse> registerEvent(
+	// 	@RequestBody RegisterEventRequest request
+	// ) {
+	// 	RegisterEventResponse response = eventCreateService.createEvent(request);
+	//
+	// 	return CommonApiResponse.<RegisterEventResponse>ok(response);
+	// }
 
 }
