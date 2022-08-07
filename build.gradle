@@ -49,6 +49,10 @@ dependencies {
     }
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    // 이미지 업로드
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.261'
+
 }
 
 tasks.named('test') {
