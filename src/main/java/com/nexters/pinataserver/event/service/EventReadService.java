@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nexters.pinataserver.common.exception.ResponseException;
 import com.nexters.pinataserver.common.exception.e4xx.DuplicatedException;
 import com.nexters.pinataserver.common.exception.e4xx.EventStatusException;
 import com.nexters.pinataserver.common.exception.e4xx.EventTimeException;
@@ -101,7 +100,7 @@ public class EventReadService {
 
 	private void checkEventStatus(Event event) {
 		EventStatus status = event.getStatus();
-		if (status.isNotProcess()) {
+		if (status.isComplete()) {
 			throw EventStatusException.COMPLETE.get();
 		}
 		if (status.isCancel()) {
