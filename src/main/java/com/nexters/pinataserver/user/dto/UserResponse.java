@@ -15,7 +15,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserResponse {
 	private String email;
-	private String profileImgUrl;
 	private String nickname;
 	private String profileImageUrl;
 	@Convert(converter = UserStateConverter.class)
