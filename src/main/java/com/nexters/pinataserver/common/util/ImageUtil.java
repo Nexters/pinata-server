@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ImageUtil {
 
-	@Value("${ncp.bucket_name}")
+	@Value("${cloud.aws.s3.bucket}")
 	private String bucketPath;
 
 	public String extractImageFileName(String imageUrl) {

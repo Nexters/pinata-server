@@ -2,6 +2,7 @@ package com.nexters.pinataserver.common.image;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,9 +17,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 public class ImageUploadController {
-
-	// @Value("${cloud.aws.s3.bucket_path}")
-	// private String BUCKET_ADDRESS;
 
 	private final ImageUploadService imageUploadService;
 
