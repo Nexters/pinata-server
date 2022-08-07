@@ -1,0 +1,7 @@
+ncp:
+  bucket_name: ${BUCKET_NAME}
+  #  end_point: ${ENDPOINT}
+  #  region_name: ${REGION_NAME}
+  #  access_key: ${ACCESS_KEY}
+  #  secret_key: ${SECRET_KEY}
+#  image_folder_name: ${IMAGE_FOLDER_NAME}

@@ -34,47 +34,37 @@ CREATE TABLE tb_event_items
 
 CREATE TABLE tb_events
 (
-    id             BIGINT       NOT NULL AUTO_INCREMENT,
+    id                   BIGINT       NOT NULL AUTO_INCREMENT,
+    organizer_id         BIGINT       NOT NULL,
     created_at           DATETIME,
     updated_at           DATETIME,
     use_flag             BIT          NOT NULL,
-    close_at             DATETIME,
     code                 VARCHAR(500) NOT NULL,
+    close_at             DATETIME,
+    is_period            BIT,
+    open_at              DATETIME,
     hit_count            INTEGER      NOT NULL,
     hit_image_file_name  VARCHAR(100),
     hit_message          VARCHAR(1000),
     limit_count          INTEGER      NOT NULL,
     miss_image_file_name VARCHAR(100),
     miss_message         VARCHAR(1000),
-    open_at              DATETIME,
     participant_count    INTEGER      NOT NULL,
+    status               VARCHAR(255),
     title                VARCHAR(500) NOT NULL,
     type                 VARCHAR(255),
     PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 
-# CREATE TABLE tb_users
-# (
-#     id           BIGINT       NOT NULL AUTO_INCREMENT,
-#     created_at        DATETIME,
-#     updated_at        DATETIME,
-#     email             VARCHAR(100) NOT NULL,
-#     nickname          VARCHAR(255),
-#     profile_image_url VARCHAR(255),
-#     provider_id       BIGINT       NOT NULL,
-#     state             VARCHAR(255),
-#     PRIMARY KEY (id)
-# ) ENGINE = InnoDB;
-
-CREATE TABLE users
+CREATE TABLE tb_users
 (
-    id                BIGINT NOT NULL AUTO_INCREMENT,
+    id                BIGINT       NOT NULL AUTO_INCREMENT,
     created_at        DATETIME,
     updated_at        DATETIME,
-    email             VARCHAR(255),
+    email             VARCHAR(100) NOT NULL,
     nickname          VARCHAR(255),
     profile_image_url VARCHAR(255),
-    provider_id       BIGINT,
+    provider_id       BIGINT       NOT NULL,
     state             INTEGER,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB;
