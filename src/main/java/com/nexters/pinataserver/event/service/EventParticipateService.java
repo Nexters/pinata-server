@@ -51,10 +51,11 @@ public class EventParticipateService {
         EventItem hitEventItem = null;
         if (isHit) {
             foundEvent.hit();
+            hitEventItem = foundEvent.getHitEventItem();
         } else {
             foundEvent.miss();
+            hitEventItem = EventItem.builder().build();
         }
-        hitEventItem = foundEvent.getHitEventItem();
 
         // 이벤트 참여 기록 저장
         writeEventHistory(participant, foundEvent, hitEventItem, isHit);
