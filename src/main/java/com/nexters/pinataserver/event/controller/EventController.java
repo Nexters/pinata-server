@@ -58,7 +58,7 @@ public class EventController {
 		consumes = MediaType.APPLICATION_JSON_VALUE
 	)
 	public CommonApiResponse<ParticipateEventResponse> participateEvent(
-		@RequestBody ParticipateEventRequest request,
+		@Valid @RequestBody ParticipateEventRequest request,
 		@AuthenticationPrincipal Long userId
 	) {
 		ParticipateEventResponse response = eventParticipateService.participateEvent(
