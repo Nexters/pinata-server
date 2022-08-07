@@ -3,6 +3,7 @@ package com.nexters.pinataserver.event.controller;
 import static com.nexters.pinataserver.event.controller.EventController.*;
 
 import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import com.nexters.pinataserver.event.dto.response.ParticipateEventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
 import com.nexters.pinataserver.event.dto.response.RegisterEventResponse;
 import com.nexters.pinataserver.event.service.EventCreateService;
+import com.nexters.pinataserver.event.service.EventParticipateService;
 import com.nexters.pinataserver.event.service.EventReadService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,8 @@ public class EventController {
 	private final EventReadService eventReadService;
 
 	private final EventCreateService eventCreateService;
+
+	private final EventParticipateService eventParticipateService;
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/participate/{eventCode}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,17 +58,13 @@ public class EventController {
 		consumes = MediaType.APPLICATION_JSON_VALUE
 	)
 	public CommonApiResponse<ParticipateEventResponse> participateEvent(
-		@RequestBody ParticipateEventRequest request
+		@Valid @RequestBody ParticipateEventRequest request,
+		@AuthenticationPrincipal Long userId
 	) {
-		ParticipateEventResponse response = ParticipateEventResponse.builder()
-			.code(request.getCode())
-			.itemId(1L)
-			.itemTitle("스타벅스 아메리카노 톨 사이즈")
-			.result(true)
-			.resultImageURL("https://kr.object.ncloudstorage.com/pinata-bucket/images/hit-image.jpeg")
-			.resultMessage("당첨되셨습니다. 축하드립니다! 선물 받기 버튼을 눌러 이미지를 저장하세요.")
-			.itemImageUrl("https://kr.object.ncloudstorage.com/pinata-bucket/images/product-image.jpeg")
-			.build();
+		ParticipateEventResponse response = eventParticipateService.participateEvent(
+			userId,
+			request.getCode()
+		);
 
 		return CommonApiResponse.<ParticipateEventResponse>ok(response);
 	}
