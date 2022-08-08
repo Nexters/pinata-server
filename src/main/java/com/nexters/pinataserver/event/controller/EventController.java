@@ -87,7 +87,7 @@ public class EventController {
 		return CommonApiResponse.<RegisterEventResponse>ok(response);
 	}
 
-	@GetMapping("")
+	@GetMapping("/")
 	public CommonApiResponse<List<EventResponse>> getEvents(@AuthenticationPrincipal Long userId, Pageable pageable) {
 		List<EventResponse> response = eventReadService.getEvents(userId, pageable);
 		return CommonApiResponse.ok(response);
