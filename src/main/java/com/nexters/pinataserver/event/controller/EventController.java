@@ -44,7 +44,7 @@ public class EventController {
 
 	private final EventParticipateService eventParticipateService;
 
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public CommonApiResponse<List<EventResponse>> getEvents(@AuthenticationPrincipal Long userId, Pageable pageable) {
 		List<EventResponse> response = eventReadService.getEvents(userId, pageable);
 		return CommonApiResponse.ok(response);
