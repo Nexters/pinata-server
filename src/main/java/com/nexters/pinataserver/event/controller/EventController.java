@@ -7,14 +7,11 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
@@ -44,54 +41,34 @@ public class EventController {
 
 	private final EventParticipateService eventParticipateService;
 
-	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping
 	public CommonApiResponse<List<EventResponse>> getEvents(@AuthenticationPrincipal Long userId, Pageable pageable) {
 		List<EventResponse> response = eventReadService.getEvents(userId, pageable);
 		return CommonApiResponse.ok(response);
 	}
 
-	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(value = "/participate/{eventCode}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping
+	public CommonApiResponse<RegisterEventResponse> registerEvent(
+		@Valid @RequestBody RegisterEventRequest request,
+		@AuthenticationPrincipal Long userId) {
+		RegisterEventResponse response = eventCreateService.createEvent(userId, request);
+		return CommonApiResponse.<RegisterEventResponse>ok(response);
+	}
+
+	@GetMapping("/participate/{eventCode}")
 	public CommonApiResponse<ReadCurrentParticipateEventResponse> readCurrentParticipateEvent(
 		@PathVariable("eventCode") String eventCode,
-		@AuthenticationPrincipal Long userId
-	) {
+		@AuthenticationPrincipal Long userId) {
 		ReadCurrentParticipateEventResponse response = eventReadService.getParticipateEvent(userId, eventCode);
-
 		return CommonApiResponse.<ReadCurrentParticipateEventResponse>ok(response);
 	}
 
-	@ResponseStatus(HttpStatus.OK)
-	@PostMapping(
-		value = "/participate",
-		produces = MediaType.APPLICATION_JSON_VALUE,
-		consumes = MediaType.APPLICATION_JSON_VALUE
-	)
+	@PostMapping("/participate")
 	public CommonApiResponse<ParticipateEventResponse> participateEvent(
 		@Valid @RequestBody ParticipateEventRequest request,
-		@AuthenticationPrincipal Long userId
-	) {
-		ParticipateEventResponse response = eventParticipateService.participateEvent(
-			userId,
-			request.getCode()
-		);
-
+		@AuthenticationPrincipal Long userId) {
+		ParticipateEventResponse response = eventParticipateService.participateEvent(userId, request.getCode());
 		return CommonApiResponse.<ParticipateEventResponse>ok(response);
-	}
-
-	@ResponseStatus(HttpStatus.OK)
-	@PostMapping(
-		produces = MediaType.APPLICATION_JSON_VALUE,
-		consumes = MediaType.APPLICATION_JSON_VALUE
-	)
-	public CommonApiResponse<RegisterEventResponse> registerEvent(
-		@Valid @RequestBody RegisterEventRequest request,
-		@AuthenticationPrincipal Long userId
-	) {
-		RegisterEventResponse response = eventCreateService.createEvent(userId, request);
-
-		return CommonApiResponse.<RegisterEventResponse>ok(response);
 	}
 
 }
