@@ -1,7 +1,5 @@
 package com.nexters.pinataserver.event.controller;
 
-import static com.nexters.pinataserver.event.controller.EventController.*;
-
 import java.util.List;
 
 import javax.validation.Valid;
@@ -30,10 +28,8 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(BASE_URI)
+@RequestMapping("/api/v1/events")
 public class EventController {
-
-	public static final String BASE_URI = "/api/v1/events";
 
 	private final EventReadService eventReadService;
 
