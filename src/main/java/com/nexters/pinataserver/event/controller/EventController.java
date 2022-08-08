@@ -2,8 +2,11 @@ package com.nexters.pinataserver.event.controller;
 
 import static com.nexters.pinataserver.event.controller.EventController.*;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +21,7 @@ import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
 import com.nexters.pinataserver.common.security.AuthenticationPrincipal;
 import com.nexters.pinataserver.event.dto.request.ParticipateEventRequest;
 import com.nexters.pinataserver.event.dto.request.RegisterEventRequest;
+import com.nexters.pinataserver.event.dto.response.EventResponse;
 import com.nexters.pinataserver.event.dto.response.ParticipateEventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
 import com.nexters.pinataserver.event.dto.response.RegisterEventResponse;
@@ -81,6 +85,12 @@ public class EventController {
 		RegisterEventResponse response = eventCreateService.createEvent(userId, request);
 
 		return CommonApiResponse.<RegisterEventResponse>ok(response);
+	}
+
+	@GetMapping
+	public CommonApiResponse<List<EventResponse>> getEvents(@AuthenticationPrincipal Long userId, Pageable pageable) {
+		List<EventResponse> response = eventReadService.getEvents(userId, pageable);
+		return CommonApiResponse.ok(response);
 	}
 
 }
