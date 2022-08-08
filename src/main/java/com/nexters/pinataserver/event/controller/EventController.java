@@ -44,6 +44,12 @@ public class EventController {
 
 	private final EventParticipateService eventParticipateService;
 
+	@GetMapping
+	public CommonApiResponse<List<EventResponse>> getEvents(@AuthenticationPrincipal Long userId, Pageable pageable) {
+		List<EventResponse> response = eventReadService.getEvents(userId, pageable);
+		return CommonApiResponse.ok(response);
+	}
+
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/participate/{eventCode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CommonApiResponse<ReadCurrentParticipateEventResponse> readCurrentParticipateEvent(
@@ -85,12 +91,6 @@ public class EventController {
 		RegisterEventResponse response = eventCreateService.createEvent(userId, request);
 
 		return CommonApiResponse.<RegisterEventResponse>ok(response);
-	}
-
-	@GetMapping("/")
-	public CommonApiResponse<List<EventResponse>> getEvents(@AuthenticationPrincipal Long userId, Pageable pageable) {
-		List<EventResponse> response = eventReadService.getEvents(userId, pageable);
-		return CommonApiResponse.ok(response);
 	}
 
 }
