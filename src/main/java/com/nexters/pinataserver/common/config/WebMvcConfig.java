@@ -1,5 +1,6 @@
 package com.nexters.pinataserver.common.config;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	private final JwtInterceptor jwtInterceptor;
 	private final AuthenticationArgumentResolver authenticationArgumentResolver;
 
+	private final CorsProperties corsProperties;
+
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(jwtInterceptor)
@@ -35,8 +38,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-			.allowedOrigins("http://localhost:3000", "http://127.0.0.1:3000")
-			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+			.allowedOrigins(corsProperties.getAllowedOrigins().split(","))
+			.allowedMethods(corsProperties.getAllowedMethods().split(","))
 			.maxAge(3000);
 	}
 
