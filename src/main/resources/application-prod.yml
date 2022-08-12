@@ -10,4 +10,4 @@ spring:
     hibernate:
       ddl-auto: none
 server:
-  port: 63458
+  port: ${PROD_SERVER_PORT}
