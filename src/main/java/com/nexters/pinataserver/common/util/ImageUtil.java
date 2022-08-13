@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 public class ImageUtil {
 
 	@Value("${cloud.aws.s3.bucket_path}")
-	private String bucketPath;
+	private static String bucketPath;
 
-	public String extractImageFileName(String imageUrl) {
+	public static String extractImageFileName(String imageUrl) {
 		return imageUrl.replace(bucketPath, "");
 	}
 
-	public String getFullImageUrl(String imageFileName) {
+	public static String getFullImageUrl(String imageFileName) {
 		return bucketPath.concat(imageFileName);
 	}
 

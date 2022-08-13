@@ -5,6 +5,7 @@ import static com.nexters.pinataserver.common.exception.e4xx.AuthenticationExcep
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -24,6 +25,10 @@ public class JwtInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ResponseException {
+		if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+			return true;
+		}
+
 		String accessToken = HeaderUtils.getAccessToken(request);
 		jwtService.verifyAccessToken(accessToken);
 
@@ -35,4 +40,5 @@ public class JwtInterceptor implements HandlerInterceptor {
 
 		return true;
 	}
+	
 }
