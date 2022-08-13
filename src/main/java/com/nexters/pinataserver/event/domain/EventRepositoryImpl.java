@@ -9,7 +9,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import com.nexters.pinataserver.event.dto.response.ParticipationEventDTO;
+import com.nexters.pinataserver.event.dto.response.ParticipationEventResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -26,17 +26,17 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
 		return queryFactory
 			.selectFrom(event)
 			.where(event.organizerId.eq(userId))
-			.orderBy(event.createdAt.desc())
+			.orderBy(event.status.asc(), event.createdAt.desc())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
 	}
-
+	
 	@Override
-	public List<ParticipationEventDTO> getParticipationEvents(Long userId, Pageable pageable) {
+	public List<ParticipationEventResponse> getParticipationEvents(Long userId, Pageable pageable) {
 		return queryFactory.from(eventHistory)
 			.select(Projections.constructor(
-				ParticipationEventDTO.class,
+				ParticipationEventResponse.class,
 				event.id.as("eventId"),
 				event.code.as("eventCode"),
 				eventHistory.isHit.as("result"),
@@ -51,7 +51,7 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
 			.leftJoin(event).on(event.id.eq(eventHistory.eventId))
 			.leftJoin(eventItem).on(eventItem.id.eq(eventHistory.eventItemId))
 			.where(eventHistory.participantId.eq(userId))
-			.orderBy(event.createdAt.desc())
+			.orderBy(event.status.asc(), event.createdAt.desc())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();

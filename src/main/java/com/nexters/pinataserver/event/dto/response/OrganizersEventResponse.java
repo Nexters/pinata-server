@@ -11,7 +11,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class EventResponse {
+public class OrganizersEventResponse {
 
 	private Long id;
 	private String code;
@@ -21,8 +21,8 @@ public class EventResponse {
 	private String closeAt;
 	private EventStatus status;
 
-	public static EventResponse from(Event event) {
-		return EventResponse.builder()
+	public static OrganizersEventResponse from(Event event) {
+		return OrganizersEventResponse.builder()
 			.id(event.getId())
 			.code(event.getCode())
 			.isPeriod(event.getEventDateTime().getIsPeriod())

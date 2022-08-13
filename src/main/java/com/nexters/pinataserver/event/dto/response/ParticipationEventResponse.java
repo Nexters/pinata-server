@@ -1,7 +1,8 @@
 package com.nexters.pinataserver.event.dto.response;
 
+import java.time.LocalDateTime;
+
 import com.nexters.pinataserver.common.dto.response.DatePatternEnum;
-import com.nexters.pinataserver.common.util.ImageUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +12,6 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class ParticipationEventResponse {
-
 	private Long eventId;
 	private String eventCode;
 	private boolean result;
@@ -20,22 +20,14 @@ public class ParticipationEventResponse {
 	private Long itemId;
 	private String itemImageUrl;
 	private boolean isPeriod;
-	private String openAt;
-	private String closeAt;
+	private LocalDateTime openAt;
+	private LocalDateTime closeAt;
 
-	public static ParticipationEventResponse from(ParticipationEventDTO participationEvent) {
-		return ParticipationEventResponse.builder()
-			.eventId(participationEvent.getEventId())
-			.eventCode(participationEvent.getEventCode())
-			.result(participationEvent.isResult())
-			.resultMessage(participationEvent.getResultMessage())
-			.resultImageUrl(ImageUtil.getFullImageUrl(participationEvent.getResultImageUrl()))
-			.itemId(participationEvent.getItemId())
-			.itemImageUrl(ImageUtil.getFullImageUrl(participationEvent.getItemImageUrl()))
-			.isPeriod(participationEvent.isPeriod())
-			.openAt(participationEvent.getOpenAt().format(DatePatternEnum.DATETIME_DEFAULT.formatter()))
-			.closeAt(participationEvent.getCloseAt().format(DatePatternEnum.DATETIME_DEFAULT.formatter()))
-			.build();
+	public String getOpenAt() {
+		return openAt.format(DatePatternEnum.DATETIME_DEFAULT.formatter());
 	}
 
+	public String getCloseAt() {
+		return closeAt.format(DatePatternEnum.DATETIME_DEFAULT.formatter());
+	}
 }
