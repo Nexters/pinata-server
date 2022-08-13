@@ -25,9 +25,9 @@ public class JwtInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ResponseException {
-		if (HttpMethod.OPTIONS.matches(request.getMethod())) {
-			return true;
-		}
+		// if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+		// 	return true;
+		// }
 
 		String accessToken = HeaderUtils.getAccessToken(request);
 		jwtService.verifyAccessToken(accessToken);
