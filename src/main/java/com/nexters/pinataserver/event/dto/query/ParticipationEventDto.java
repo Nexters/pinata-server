@@ -19,9 +19,13 @@ public class ParticipationEventDto {
 
 	private boolean result;
 
-	private String resultMessage;
+	private String hitMessage;
 
-	private String resultImageFileName;
+	private String hitImageFileName;
+
+	private String missMessage;
+
+	private String missImageFileName;
 
 	private Long itemId;
 

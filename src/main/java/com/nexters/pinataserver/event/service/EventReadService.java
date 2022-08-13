@@ -79,13 +79,19 @@ public class EventReadService {
 				.eventTitle(participationEventDto.getEventTitle())
 				.eventCode(participationEventDto.getEventCode())
 				.result(participationEventDto.isResult())
-				.resultImageUrl(imageUtil.getFullImageUrl(participationEventDto.getResultImageFileName()))
+				.resultImageUrl(
+					participationEventDto.isResult() ?  imageUtil.getFullImageUrl(participationEventDto.getHitImageFileName()) : imageUtil.getFullImageUrl(participationEventDto.getMissImageFileName()))
 				.itemId(participationEventDto.getItemId())
-				.itemTitle(participationEventDto.getItemTitle())
+				.itemTitle(
+					participationEventDto.isResult() ? participationEventDto.getItemTitle() : null
+					)
 				.itemImageUrl(imageUtil.getFullImageUrl(participationEventDto.getItemImageFileName()))
 				.openAt(participationEventDto.getOpenAt())
 				.closeAt(participationEventDto.getCloseAt())
 				.participateAt(participationEventDto.getParticipateAt())
+				.resultMessage(
+					participationEventDto.isResult() ? participationEventDto.getHitMessage() : participationEventDto.getMissMessage()
+				)
 				.build())
 			.collect(Collectors.toList());
 	}
