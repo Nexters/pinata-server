@@ -11,20 +11,20 @@ import com.nexters.pinataserver.common.exception.e4xx.NotFoundException;
 import com.nexters.pinataserver.common.util.ImageUtil;
 import com.nexters.pinataserver.event.domain.Event;
 import com.nexters.pinataserver.event.domain.EventRepository;
-import com.nexters.pinataserver.event.domain.EventsRepository;
 import com.nexters.pinataserver.event.dto.response.EventResponse;
+import com.nexters.pinataserver.event.dto.response.ParticipationEventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class EventReadService {
 
 	private final EventRepository eventRepository;
-
-	private final EventsRepository eventsRepository;
 
 	private final EventValidateService eventValidateService;
 
@@ -64,8 +64,15 @@ public class EventReadService {
 	}
 
 	public List<EventResponse> getEvents(Long userId, Pageable pageable) {
-		return eventsRepository.getMyEvents(userId, pageable).stream()
+		return eventRepository.getMyEvents(userId, pageable).stream()
 			.map(EventResponse::from)
+			.collect(Collectors.toList());
+	}
+
+	public List<ParticipationEventResponse> getParticipationEvents(Long userId, Pageable pageable) {
+		return eventRepository.getParticipationEvents(userId, pageable)
+			.stream()
+			.map(ParticipationEventResponse::from)
 			.collect(Collectors.toList());
 	}
 

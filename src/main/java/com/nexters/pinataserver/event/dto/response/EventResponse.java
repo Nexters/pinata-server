@@ -1,9 +1,8 @@
 package com.nexters.pinataserver.event.dto.response;
 
+import com.nexters.pinataserver.common.dto.response.DatePatternEnum;
 import com.nexters.pinataserver.event.domain.Event;
-import com.nexters.pinataserver.event.domain.EventDateTime;
 import com.nexters.pinataserver.event.domain.EventStatus;
-import com.nexters.pinataserver.event.domain.EventType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,31 +13,23 @@ import lombok.Getter;
 @AllArgsConstructor
 public class EventResponse {
 
+	private Long id;
+	private String code;
 	private String title;
-	private EventDateTime eventDateTime;
-	private EventType type;
+	private boolean isPeriod;
+	private String openAt;
+	private String closeAt;
 	private EventStatus status;
-	private Integer limitCount;
-	private Integer hitCount;
-	private Integer participantCount;
-	private String hitImageFileName;
-	private String hitMessage;
-	private String missImageFileName;
-	private String missMessage;
 
 	public static EventResponse from(Event event) {
 		return EventResponse.builder()
+			.id(event.getId())
+			.code(event.getCode())
+			.isPeriod(event.getEventDateTime().getIsPeriod())
 			.title(event.getTitle())
-			.eventDateTime(event.getEventDateTime())
-			.type(event.getType())
 			.status(event.getStatus())
-			.limitCount(event.getLimitCount())
-			.hitCount(event.getHitCount())
-			.participantCount(event.getParticipantCount())
-			.hitImageFileName(event.getHitImageFileName())
-			.hitMessage(event.getHitMessage())
-			.missImageFileName(event.getMissImageFileName())
-			.missMessage(event.getMissMessage())
+			.openAt(event.getEventDateTime().getOpenAt().format(DatePatternEnum.DATETIME_DEFAULT.formatter()))
+			.closeAt(event.getEventDateTime().getCloseAt().format(DatePatternEnum.DATETIME_DEFAULT.formatter()))
 			.build();
 	}
 
