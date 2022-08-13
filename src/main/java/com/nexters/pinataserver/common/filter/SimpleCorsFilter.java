@@ -30,7 +30,7 @@ public class SimpleCorsFilter implements Filter {
 
 		res.setHeader("Access-Control-Allow-Origin", "*");
 		res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
-		res.setHeader("Access-Control-Allow-Credentials", "true");
+		// res.setHeader("Access-Control-Allow-Credentials", "true");
 		res.setHeader("Access-Control-Max-Age", "3600");
 		res.setHeader("Access-Control-Expose-Headers", "Authorization, X-Total-Count, Link, authorization");
 		res.setHeader("Access-Control-Allow-Headers",
