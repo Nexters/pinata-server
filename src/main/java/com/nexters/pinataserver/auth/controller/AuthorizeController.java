@@ -15,7 +15,7 @@ import com.nexters.pinataserver.user.domain.UserState;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/v1/auth")
+@RequestMapping("/api/v1/auth")
 @RestController
 @RequiredArgsConstructor
 public class AuthorizeController {
