@@ -40,6 +40,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		registry.addMapping("/**")
 			.allowedOrigins("http://localhost:3000", "http://127.0.0.1:3000","https://pinata-gift.com")
 			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+			.allowCredentials(true)
+			.exposedHeaders("Authorization")
 			.maxAge(3000);
 			// .allowedOrigins(corsProperties.getAllowedOrigins().split(","))
 			// .allowedMethods(corsProperties.getAllowedMethods().split(","))
