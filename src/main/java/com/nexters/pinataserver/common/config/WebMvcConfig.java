@@ -43,8 +43,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.allowCredentials(true)
 			.exposedHeaders("Authorization")
 			.maxAge(3000);
-			// .allowedOrigins(corsProperties.getAllowedOrigins().split(","))
-			// .allowedMethods(corsProperties.getAllowedMethods().split(","))
 	}
 
 }
