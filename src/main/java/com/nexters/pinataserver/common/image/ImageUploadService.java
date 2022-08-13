@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.nexters.pinataserver.common.exception.e5xx.FileUploadException;
+import com.nexters.pinataserver.common.util.ImageUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageUploadService {
 
     private final AmazonS3Client amazonS3Client;
+
+    private final ImageUtil imageUtil;
 
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;  // S3 버킷 이름
@@ -42,7 +45,7 @@ public class ImageUploadService {
                 throw FileUploadException.IMAGE.get();
             }
 
-            fileNameList.add(fileName);
+            fileNameList.add(imageUtil.getFullImageUrl(fileName));
         });
 
         return fileNameList;
