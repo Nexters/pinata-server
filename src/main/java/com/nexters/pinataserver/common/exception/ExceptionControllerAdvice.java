@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
 import com.nexters.pinataserver.common.exception.e4xx.AuthenticationException;
 import com.nexters.pinataserver.common.exception.e4xx.ExpiredAccessTokenException;
+import com.nexters.pinataserver.common.exception.e5xx.FileUploadException;
 import com.nexters.pinataserver.common.exception.e5xx.UnKnownException;
 
 import io.jsonwebtoken.JwtException;
@@ -38,6 +39,7 @@ public class ExceptionControllerAdvice {
 	}
 
 	@ExceptionHandler(ResponseException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public CommonApiResponse<ResponseException> processException(ResponseException exception) {
 		log.info("{}", exception);
 		return CommonApiResponse.error(exception);

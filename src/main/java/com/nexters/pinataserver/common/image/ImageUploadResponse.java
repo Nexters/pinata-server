@@ -1,5 +1,7 @@
 package com.nexters.pinataserver.common.image;
 
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ImageUploadResponse {
 
-	private String imageUrl;
+	private List<String> imageUrls;
 
-	public static ImageUploadResponse of(String imageUrl) {
+	public static ImageUploadResponse of(List<String> imageUrls) {
 		ImageUploadResponse imageUploadResponse = new ImageUploadResponse();
-		imageUploadResponse.setImageUrl(imageUrl);
+		imageUploadResponse.setImageUrls(imageUrls);
 
 		return imageUploadResponse;
 	}
