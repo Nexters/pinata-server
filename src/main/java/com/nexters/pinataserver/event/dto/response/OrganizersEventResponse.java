@@ -14,11 +14,17 @@ import lombok.Getter;
 public class OrganizersEventResponse {
 
 	private Long id;
+
 	private String code;
+
 	private String title;
+
 	private boolean isPeriod;
+
 	private String openAt;
+
 	private String closeAt;
+
 	private EventStatus status;
 
 	public static OrganizersEventResponse from(Event event) {

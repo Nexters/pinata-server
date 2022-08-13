@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
-import com.nexters.pinataserver.event.dto.response.ParticipationEventResponse;
+import com.nexters.pinataserver.event.dto.query.ParticipationEventDto;
 
 public interface EventRepositoryCustom {
 	List<Event> getMyEvents(Long userId, Pageable pageable);
 
-	List<ParticipationEventResponse> getParticipationEvents(Long userId, Pageable pageable);
+	List<ParticipationEventDto> getParticipationEvents(Long userId, Pageable pageable);
 }

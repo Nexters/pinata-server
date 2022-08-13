@@ -11,9 +11,10 @@ import com.nexters.pinataserver.common.exception.e4xx.NotFoundException;
 import com.nexters.pinataserver.common.util.ImageUtil;
 import com.nexters.pinataserver.event.domain.Event;
 import com.nexters.pinataserver.event.domain.EventRepository;
+import com.nexters.pinataserver.event.dto.query.ParticipationEventDto;
 import com.nexters.pinataserver.event.dto.response.OrganizersEventResponse;
-import com.nexters.pinataserver.event.dto.response.ParticipationEventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
+import com.nexters.pinataserver.event.dto.response.ReadParticipateEventsResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -69,8 +70,24 @@ public class EventReadService {
 			.collect(Collectors.toList());
 	}
 
-	public List<ParticipationEventResponse> getParticipationEvents(Long userId, Pageable pageable) {
-		return eventRepository.getParticipationEvents(userId, pageable);
+	public List<ReadParticipateEventsResponse> getParticipationEvents(Long userId, Pageable pageable) {
+		List<ParticipationEventDto> participationEvents = eventRepository.getParticipationEvents(userId, pageable);
+
+		return participationEvents.stream()
+			.map(participationEventDto -> ReadParticipateEventsResponse.builder()
+				.eventId(participationEventDto.getEventId())
+				.eventTitle(participationEventDto.getEventTitle())
+				.eventCode(participationEventDto.getEventCode())
+				.result(participationEventDto.isResult())
+				.resultImageUrl(imageUtil.getFullImageUrl(participationEventDto.getResultImageFileName()))
+				.itemId(participationEventDto.getItemId())
+				.itemTitle(participationEventDto.getItemTitle())
+				.itemImageUrl(imageUtil.getFullImageUrl(participationEventDto.getItemImageFileName()))
+				.openAt(participationEventDto.getOpenAt())
+				.closeAt(participationEventDto.getCloseAt())
+				.participateAt(participationEventDto.getParticipateAt())
+				.build())
+			.collect(Collectors.toList());
 	}
 
 }

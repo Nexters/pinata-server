@@ -20,8 +20,8 @@ import com.nexters.pinataserver.event.dto.request.ParticipateEventRequest;
 import com.nexters.pinataserver.event.dto.request.RegisterEventRequest;
 import com.nexters.pinataserver.event.dto.response.OrganizersEventResponse;
 import com.nexters.pinataserver.event.dto.response.ParticipateEventResponse;
-import com.nexters.pinataserver.event.dto.response.ParticipationEventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
+import com.nexters.pinataserver.event.dto.response.ReadParticipateEventsResponse;
 import com.nexters.pinataserver.event.dto.response.RegisterEventResponse;
 import com.nexters.pinataserver.event.service.EventCreateService;
 import com.nexters.pinataserver.event.service.EventParticipateService;
@@ -49,9 +49,9 @@ public class EventController {
 	}
 
 	@GetMapping("/participate/me")
-	public CommonApiResponse<List<ParticipationEventResponse>> getParticipationEvents(@AuthenticationPrincipal Long userId,
+	public CommonApiResponse<List<ReadParticipateEventsResponse>> getParticipationEvents(@AuthenticationPrincipal Long userId,
 		@PageableDefault(page = 0, size = 100) Pageable pageable) {
-		List<ParticipationEventResponse> response = eventReadService.getParticipationEvents(userId, pageable);
+		List<ReadParticipateEventsResponse> response = eventReadService.getParticipationEvents(userId, pageable);
 		return CommonApiResponse.ok(response);
 	}
 

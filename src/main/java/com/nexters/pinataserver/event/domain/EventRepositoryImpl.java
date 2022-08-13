@@ -9,7 +9,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import com.nexters.pinataserver.event.dto.response.ParticipationEventResponse;
+import com.nexters.pinataserver.event.dto.query.ParticipationEventDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -33,20 +33,23 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
 	}
 	
 	@Override
-	public List<ParticipationEventResponse> getParticipationEvents(Long userId, Pageable pageable) {
+	public List<ParticipationEventDto> getParticipationEvents(Long userId, Pageable pageable) {
 		return queryFactory.from(eventHistory)
 			.select(Projections.constructor(
-				ParticipationEventResponse.class,
+				ParticipationEventDto.class,
 				event.id.as("eventId"),
 				event.code.as("eventCode"),
+				event.title.as("eventTitle"),
 				eventHistory.isHit.as("result"),
 				event.missMessage.as("resultMessage"),
-				event.missImageFileName.as("resultImageUrl"),
+				event.missImageFileName.as("resultImageFileName"),
 				eventItem.id.as("itemId"),
-				eventItem.imageFileName.as("itemImageUrl"),
+				eventItem.title.as("itemTitle"),
+				eventItem.imageFileName.as("itemImageFileName"),
 				event.eventDateTime.isPeriod,
 				event.eventDateTime.openAt,
-				event.eventDateTime.closeAt
+				event.eventDateTime.closeAt,
+				event.createdAt.as("participateAt")
 			))
 			.leftJoin(event).on(event.id.eq(eventHistory.eventId))
 			.leftJoin(eventItem).on(eventItem.id.eq(eventHistory.eventItemId))
