@@ -14,6 +14,9 @@ public class ImageUtil {
 	}
 
 	public String getFullImageUrl(String imageFileName) {
+		if (imageFileName == null) {
+			return null;
+		}
 		return bucketPath.concat(imageFileName);
 	}
 
