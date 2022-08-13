@@ -46,7 +46,7 @@ public class EventHistory extends AbstractSoftDeletableEntity {
 	@Column(name = "is_hit", nullable = false)
 	private boolean isHit;
 
-	@Column(name = "event_item_id", nullable = false)
+	@Column(name = "event_item_id")
 	private Long eventItemId;
 
 	@Builder

@@ -9,7 +9,7 @@ CREATE TABLE tb_event_histories
     updated_at        DATETIME,
     use_flag          BIT          NOT NULL,
     event_id          BIGINT       NOT NULL,
-    event_item_id     BIGINT       NOT NULL,
+    event_item_id     BIGINT       ,
     is_hit            BIT          NOT NULL,
     participant_email VARCHAR(255) NOT NULL,
     participant_id    BIGINT       NOT NULL,
