@@ -10,8 +10,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class SimpleCorsFilter implements Filter {
 
@@ -23,14 +27,22 @@ public class SimpleCorsFilter implements Filter {
 
 		res.setHeader("Access-Control-Allow-Origin", "*");
 		res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
-		res.setHeader("Access-Control-Expose-Headers", "Authorization, X-Total-Count, Link");
+		res.setHeader("Access-Control-Allow-Credentials", "true");
+		res.setHeader("Access-Control-Max-Age", "3600");
+
 		res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept," +
 			" Accept-Encoding, Accept-Language, Host, Referer, Connection, User-Agent, authorization, sw-useragent, sw-version");
 
-		if (req.getMethod().equals("OPTIONS")) {
+		log.info("======================================== CorsFilter");
+		log.info(req.getHeader(HttpHeaders.AUTHORIZATION));
+		log.info("======================================== CorsFilter");
+
+
+		if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
 			res.setStatus(HttpServletResponse.SC_OK);
-			return;
+		} else {
+			chain.doFilter(req, res);
 		}
-		chain.doFilter(request, response);
+
 	}
 }
