@@ -10,10 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nexters.pinataserver.common.exception.e4xx.NotFoundException;
 import com.nexters.pinataserver.common.util.ImageUtil;
 import com.nexters.pinataserver.event.domain.Event;
+import com.nexters.pinataserver.event.domain.EventItem;
 import com.nexters.pinataserver.event.domain.EventRepository;
 import com.nexters.pinataserver.event.domain.EventsRepository;
 import com.nexters.pinataserver.event.dto.response.EventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
+import com.nexters.pinataserver.event.dto.response.ReadEventResponse;
+import com.nexters.pinataserver.event_history.domain.EventHistory;
+import com.nexters.pinataserver.event_history.domain.EventHistoryRepository;
+import com.nexters.pinataserver.user.domain.User;
+import com.nexters.pinataserver.user.domain.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +33,8 @@ public class EventReadService {
 	private final EventsRepository eventsRepository;
 
 	private final EventValidateService eventValidateService;
+
+	private final EventHistoryRepository eventHistoryRepository;
 
 	private final ImageUtil imageUtil;
 
@@ -67,6 +75,51 @@ public class EventReadService {
 		return eventsRepository.getMyEvents(userId, pageable).stream()
 			.map(EventResponse::from)
 			.collect(Collectors.toList());
+	}
+
+	public ReadEventResponse getEvent(Long userId, String eventCode) {
+
+		// 이벤트 조회
+		Event foundEvent = eventRepository.findByCode(eventCode)
+			.orElseThrow(NotFoundException.EVENT);
+
+		return convertToReadEventResponse(foundEvent);
+	}
+
+	private ReadEventResponse convertToReadEventResponse(Event foundEvent) {
+		return ReadEventResponse.builder()
+			.id(foundEvent.getId())
+			.title(foundEvent.getTitle())
+			.code(foundEvent.getCode())
+			.status(foundEvent.getStatus())
+			.isPeriod(foundEvent.getEventDateTime().getIsPeriod())
+			.openAt(foundEvent.getEventDateTime().getOpenAt())
+			.closeAt(foundEvent.getEventDateTime().getCloseAt())
+			.type(foundEvent.getType())
+			.totalParticipantCount(foundEvent.getParticipantCount())
+			.items(foundEvent.getEventItems().stream()
+				.map(this::convertToReadEventItemResult)
+				.collect(Collectors.toList()))
+			.build();
+	}
+
+	private ReadEventResponse.EventItemResult convertToReadEventItemResult(EventItem eventItem) {
+
+		EventHistory foundEventHistory = getEventHistory(eventItem);
+
+		return ReadEventResponse.EventItemResult.builder()
+			.id(eventItem.getId())
+			.rank(eventItem.getRanking())
+			.imageUrl(imageUtil.getFullImageUrl(eventItem.getImageFileName()))
+			.isAccepted(eventItem.isAccepted())
+			.acceptorEmail(foundEventHistory.getParticipantEmail())
+			.acceptorNickname(foundEventHistory.getParticipantName())
+			.build();
+	}
+
+	private EventHistory getEventHistory(EventItem eventItem) {
+		return eventHistoryRepository.findByEventId(eventItem.getEvent().getId())
+			.orElseThrow(NotFoundException.EVENT_HISTORY);
 	}
 
 }

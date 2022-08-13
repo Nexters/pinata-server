@@ -8,7 +8,10 @@ import com.nexters.pinataserver.common.exception.ResponseException;
 public enum NotFoundException implements ResponseDefinition {
 
 	USER(HttpStatus.BAD_REQUEST, "ERR0001", "해당 사용자가 존재하지 않습니다."),
+
 	EVENT(HttpStatus.BAD_REQUEST, "ERR1001", "해당 이벤트가 존재하지 않습니다."),
+
+	EVENT_HISTORY(HttpStatus.BAD_REQUEST, "ERR2001", "해당 이벤트 기록이 존재하지 않습니다."),
 	;
 
 	private final ResponseException responseException;
