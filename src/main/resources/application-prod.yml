@@ -11,3 +11,7 @@ spring:
       ddl-auto: none
 server:
   port: ${PROD_SERVER_PORT}
+  ssl:
+    key-store: ${KET_STORE_PATH}
+    key-store-type: PKCS12
+    key-store-password: 1234
