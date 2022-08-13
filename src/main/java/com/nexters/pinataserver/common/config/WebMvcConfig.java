@@ -41,7 +41,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.allowedOrigins("https://pinata-gift.com", "http://localhost:3000", "http://127.0.0.1:3000")
 			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 			.allowCredentials(true)
-			.exposedHeaders("Authorization")
+			.exposedHeaders("Authorization","authorization")
 			.maxAge(3000);
 	}
 

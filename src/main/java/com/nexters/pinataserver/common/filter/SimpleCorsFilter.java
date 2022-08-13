@@ -29,9 +29,9 @@ public class SimpleCorsFilter implements Filter {
 		res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
 		res.setHeader("Access-Control-Allow-Credentials", "true");
 		res.setHeader("Access-Control-Max-Age", "3600");
-
+		res.setHeader("Access-Control-Expose-Headers", "Authorization, X-Total-Count, Link, authorization");
 		res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept," +
-			" Accept-Encoding, Accept-Language, Host, Referer, Connection, User-Agent, authorization, sw-useragent, sw-version");
+			" Accept-Encoding, Accept-Language, Host, Referer, Connection, User-Agent, authorization, Authorization, sw-useragent, sw-version");
 
 		log.info("======================================== CorsFilter");
 		log.info(req.getHeader(HttpHeaders.AUTHORIZATION));
