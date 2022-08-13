@@ -1,6 +1,7 @@
 package com.nexters.pinataserver.common.image;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -22,11 +23,11 @@ public class ImageUploadController {
 
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping("/api/v1/images")
-	public CommonApiResponse createBoards(@RequestParam(value = "files", required = false) MultipartFile multipartFile) throws
+	public CommonApiResponse createBoards(@RequestParam(value = "files", required = false) List<MultipartFile> multipartFile) throws
 		IOException {
-		String uploadedUrl = imageUploadService.upload(multipartFile);
+		List<String> uploadedUrls = imageUploadService.upload(multipartFile);
 
-		return CommonApiResponse.ok(ImageUploadResponse.of(uploadedUrl));
+		return CommonApiResponse.ok(ImageUploadResponse.of(uploadedUrls));
 	}
 
 }
