@@ -38,9 +38,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-			.allowedOrigins(corsProperties.getAllowedOrigins().split(","))
-			.allowedMethods(corsProperties.getAllowedMethods().split(","))
+			.allowedOrigins("http://localhost:3000", "http://127.0.0.1:3000","https://pinata-gift.com")
+			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 			.maxAge(3000);
+			// .allowedOrigins(corsProperties.getAllowedOrigins().split(","))
+			// .allowedMethods(corsProperties.getAllowedMethods().split(","))
 	}
 
 }
