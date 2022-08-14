@@ -35,7 +35,7 @@ public class AuthorizeController {
 			return CommonApiResponse.ok(new SignInResponse(authService.signUp(user)));
 		}
 
-		SignInResponse response = new SignInResponse(authService.signIn(request.getEmail()));
+		SignInResponse response = new SignInResponse(authService.signIn(request.getProviderId()));
 		return CommonApiResponse.ok(response);
 	}
 

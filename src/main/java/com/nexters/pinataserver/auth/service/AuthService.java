@@ -21,8 +21,8 @@ public class AuthService {
 		return jwtService.createAccessToken(currentUser.getId().toString());
 	}
 
-	public String signIn(String email) throws ResponseException {
-		User currentUser = userService.getUserByEmail(email);
+	public String signIn(Long providerId) throws ResponseException {
+		User currentUser = userService.getUserByProviderId(providerId);
 		return jwtService.createAccessToken(currentUser.getId().toString());
 	}
 

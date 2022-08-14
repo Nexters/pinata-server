@@ -46,11 +46,6 @@ public class EventController {
 	@GetMapping
 	public CommonApiResponse<List<OrganizersEventResponse>> getEvents(@AuthenticationPrincipal Long userId,
 		@PageableDefault(page = 0, size = 100) Pageable pageable) {
-
-		log.info("==============/api/v1/events==============");
-		log.info("{}", userId);
-		log.info("==========================================");
-
 		List<OrganizersEventResponse> response = eventReadService.getEvents(userId, pageable);
 		return CommonApiResponse.ok(response);
 	}
@@ -58,11 +53,6 @@ public class EventController {
 	@GetMapping("/participate/me")
 	public CommonApiResponse<List<ReadParticipateEventsResponse>> getParticipationEvents(@AuthenticationPrincipal Long userId,
 		@PageableDefault(page = 0, size = 100) Pageable pageable) {
-
-		log.info("==============/api/v1/events==============");
-		log.info("{}", userId);
-		log.info("==========================================");
-
 		List<ReadParticipateEventsResponse> response = eventReadService.getParticipationEvents(userId, pageable);
 		return CommonApiResponse.ok(response);
 	}
