@@ -54,6 +54,7 @@ public class EventParticipateService {
 		if (isHit) {
 			foundEvent.hit();
 			hitEventItem = foundEvent.getHitEventItem();
+			hitEventItem.accept();
 		} else {
 			foundEvent.miss();
 			hitEventItem = EventItem.builder().build();
