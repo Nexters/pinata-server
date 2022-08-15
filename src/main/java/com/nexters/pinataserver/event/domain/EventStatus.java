@@ -3,6 +3,10 @@ package com.nexters.pinataserver.event.domain;
 public enum EventStatus {
 	PROCESS, WAIT, COMPLETE, CANCEL;
 
+	public boolean isWait() {
+		return this == WAIT;
+	}
+
 	public boolean isComplete() {
 		return this == COMPLETE;
 	}
@@ -22,5 +26,4 @@ public enum EventStatus {
 	public boolean isNotComplete() {
 		return this != COMPLETE;
 	}
-
 }

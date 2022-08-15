@@ -43,12 +43,16 @@ public class RegisterEventRequest {
 	@Size(min = 1, message = "items must be more than 1")
 	private List<EventItemParam> items;
 
+	@NotBlank(message = "hitMessage is not blank")
 	private String hitMessage;
 
+	@NotBlank(message = "hitImageUrl is not blank")
 	private String hitImageUrl;
 
+	@NotBlank(message = "missMessage is not blank")
 	private String missMessage;
 
+	@NotBlank(message = "missImageUrl is not blank")
 	private String missImageUrl;
 
 	@Getter

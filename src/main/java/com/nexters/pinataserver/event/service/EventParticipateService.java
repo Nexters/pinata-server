@@ -1,8 +1,11 @@
 package com.nexters.pinataserver.event.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nexters.pinataserver.common.exception.e4xx.EventTimeException;
 import com.nexters.pinataserver.common.exception.e4xx.NotFoundException;
 import com.nexters.pinataserver.common.util.ImageUtil;
 import com.nexters.pinataserver.event.domain.Event;
@@ -30,6 +33,8 @@ public class EventParticipateService {
 
 	private final EventValidateService eventValidateService;
 
+	private final FixStatusService fixEventStatusService;
+
 	private final ImageUtil imageUtil;
 
 	public ParticipateEventResponse participateEvent(Long participantId, String eventCode) {
@@ -38,12 +43,20 @@ public class EventParticipateService {
 		User participant = userRepository.findById(participantId)
 			.orElseThrow(NotFoundException.USER);
 
+		// TODO : 분리할 로직
+		// 기간 + 현재 상태 체크 후 수정
+		fixEventStatusService.fixEventStatus(eventCode);
+
 		// 이벤트 조회
 		Event foundEvent = eventRepository.findByCodeForUpdate(eventCode)
 			.orElseThrow(NotFoundException.EVENT);
 
 		// 이벤트 참가 가능한 이벤트인지 검증
 		eventValidateService.validateCanParticipate(participantId, foundEvent);
+		// TODO : 분리할 로직
+		if (foundEvent.getEventDateTime().isBeforeOpenDateTime(LocalDateTime.now())) {
+		    throw EventTimeException.TIME_OUT.get();
+		}
 
 		// 게임 유형별로 당첨여부 판단
 		EventType eventType = foundEvent.getType();
