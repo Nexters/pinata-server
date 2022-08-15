@@ -1,5 +1,9 @@
 package com.nexters.pinataserver.event.service;
 
+import java.time.LocalDateTime;
+
+import org.springframework.stereotype.Service;
+
 import com.nexters.pinataserver.common.exception.e4xx.DuplicatedException;
 import com.nexters.pinataserver.common.exception.e4xx.EventStatusException;
 import com.nexters.pinataserver.common.exception.e4xx.EventTimeException;
@@ -7,9 +11,8 @@ import com.nexters.pinataserver.event.domain.Event;
 import com.nexters.pinataserver.event.domain.EventDateTime;
 import com.nexters.pinataserver.event.domain.EventStatus;
 import com.nexters.pinataserver.event_history.domain.EventHistoryRepository;
-import java.time.LocalDateTime;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +25,7 @@ public class EventValidateService {
         fixEventStatus(foundEvent);
 
         // 이미 참가한 이벤트인지 검증
-        checkAlreadyParticipate(participantId, foundEvent.getId());
+        // checkAlreadyParticipate(participantId, foundEvent.getId());
 
         // 기간이 지나지는 않았나??
         checkEventTimeOut(foundEvent);

@@ -47,24 +47,25 @@ public class EventDateTime {
 	}
 
 	private void checkIsPeriod(Boolean isPeriod, LocalDateTime openAt, LocalDateTime closeAt) throws ResponseException {
-		if (isPeriod && (Objects.isNull(openAt) || Objects.isNull(closeAt))) {
+		// if (isPeriod && (Objects.isNull(openAt) || Objects.isNull(closeAt))) {
+		if (Objects.isNull(openAt) || Objects.isNull(closeAt)) {
 			throw EventTimeException.INVALID_INPUT.get();
 		}
 	}
 
 	public boolean isCanNotParticipate(LocalDateTime now) {
-		if (isPeriod) {
-			return now.isAfter(closeAt) || now.isBefore(openAt);
-		}
+		// if (isPeriod) {
+		// 	return now.isAfter(closeAt) || now.isBefore(openAt);
+		// }
 
 		return now.isAfter(closeAt);
 	}
 
 	public boolean isBeforeOpenDateTime(LocalDateTime now) {
-		// 시작 시간이 없으면 현재 시작중임
-		if (!isPeriod) {
-			return true;
-		}
+		// // 시작 시간이 없으면 현재 시작중임
+		// if (!isPeriod) {
+		// 	return true;
+		// }
 
 		return now.isBefore(openAt);
 	}

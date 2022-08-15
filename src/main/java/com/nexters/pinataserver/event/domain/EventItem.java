@@ -75,4 +75,7 @@ public class EventItem extends AbstractSoftDeletableEntity {
 		this.event = event;
 	}
 
+	public void accept() {
+		this.isAccepted = true;
+	}
 }
