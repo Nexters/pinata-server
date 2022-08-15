@@ -22,6 +22,7 @@ import com.nexters.pinataserver.event.dto.response.OrganizersEventResponse;
 import com.nexters.pinataserver.event.dto.response.ParticipateEventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadParticipateEventsResponse;
+import com.nexters.pinataserver.event.dto.response.ReadEventResponse;
 import com.nexters.pinataserver.event.dto.response.RegisterEventResponse;
 import com.nexters.pinataserver.event.service.EventCreateService;
 import com.nexters.pinataserver.event.service.EventParticipateService;
@@ -79,6 +80,15 @@ public class EventController {
 		@AuthenticationPrincipal Long userId) {
 		ParticipateEventResponse response = eventParticipateService.participateEvent(userId, request.getCode());
 		return CommonApiResponse.<ParticipateEventResponse>ok(response);
+	}
+
+	@GetMapping("/{eventCode}")
+	public CommonApiResponse<ReadEventResponse> readEvent(
+		@PathVariable("eventCode") String eventCode,
+		@AuthenticationPrincipal Long userId
+	) {
+		ReadEventResponse response = eventReadService.getEvent(userId, eventCode);
+		return CommonApiResponse.ok(response);
 	}
 
 }

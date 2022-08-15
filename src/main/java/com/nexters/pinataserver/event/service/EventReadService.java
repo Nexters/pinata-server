@@ -10,11 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nexters.pinataserver.common.exception.e4xx.NotFoundException;
 import com.nexters.pinataserver.common.util.ImageUtil;
 import com.nexters.pinataserver.event.domain.Event;
+import com.nexters.pinataserver.event.domain.EventItem;
 import com.nexters.pinataserver.event.domain.EventRepository;
 import com.nexters.pinataserver.event.dto.query.ParticipationEventDto;
 import com.nexters.pinataserver.event.dto.response.OrganizersEventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadParticipateEventsResponse;
+import com.nexters.pinataserver.event.dto.response.ReadEventResponse;
+import com.nexters.pinataserver.event_history.domain.EventHistory;
+import com.nexters.pinataserver.event_history.domain.EventHistoryRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +32,8 @@ public class EventReadService {
 	private final EventRepository eventRepository;
 
 	private final EventValidateService eventValidateService;
+
+	private final EventHistoryRepository eventHistoryRepository;
 
 	private final ImageUtil imageUtil;
 
@@ -64,6 +70,7 @@ public class EventReadService {
 			.build();
 	}
 
+	@Transactional(readOnly = true)
 	public List<OrganizersEventResponse> getEvents(Long userId, Pageable pageable) {
 		return eventRepository.getMyEvents(userId, pageable).stream()
 			.map(OrganizersEventResponse::from)
@@ -94,6 +101,55 @@ public class EventReadService {
 				)
 				.build())
 			.collect(Collectors.toList());
+	}
+
+	@Transactional(readOnly = true)
+	public ReadEventResponse getEvent(Long userId, String eventCode) {
+
+		// 이벤트 조회
+		Event foundEvent = eventRepository.findByCode(eventCode)
+			.orElseThrow(NotFoundException.EVENT);
+
+		return convertToReadEventResponse(foundEvent);
+	}
+
+	private ReadEventResponse convertToReadEventResponse(Event foundEvent) {
+		return ReadEventResponse.builder()
+			.id(foundEvent.getId())
+			.title(foundEvent.getTitle())
+			.code(foundEvent.getCode())
+			.status(foundEvent.getStatus())
+			.isPeriod(foundEvent.getEventDateTime().getIsPeriod())
+			.openAt(foundEvent.getEventDateTime().getOpenAt())
+			.closeAt(foundEvent.getEventDateTime().getCloseAt())
+			.type(foundEvent.getType())
+			.totalParticipantCount(foundEvent.getParticipantCount())
+			.items(foundEvent.getEventItems().stream()
+				.map(this::convertToReadEventItemResult)
+				.collect(Collectors.toList()))
+			.build();
+	}
+
+	// TODO : 이벤트 상세조회 시 N+1문제 해결 필요
+	private ReadEventResponse.EventItemResult convertToReadEventItemResult(EventItem eventItem) {
+
+		EventHistory foundEventHistory = getEventHistory(eventItem);
+
+		return ReadEventResponse.EventItemResult.builder()
+			.id(eventItem.getId())
+			.rank(eventItem.getRanking())
+			.imageUrl(imageUtil.getFullImageUrl(eventItem.getImageFileName()))
+			.isAccepted(eventItem.isAccepted())
+			.acceptorEmail(foundEventHistory.getParticipantEmail())
+			.acceptorNickname(foundEventHistory.getParticipantName())
+			.build();
+	}
+
+	private EventHistory getEventHistory(EventItem eventItem) {
+		EventHistory empty = EventHistory.builder().build();
+
+		return eventHistoryRepository.findByEventId(eventItem.getEvent().getId())
+			.orElse(empty);
 	}
 
 }
