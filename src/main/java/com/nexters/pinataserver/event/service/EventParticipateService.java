@@ -1,14 +1,12 @@
 package com.nexters.pinataserver.event.service;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nexters.pinataserver.common.exception.e4xx.EventTimeException;
 import com.nexters.pinataserver.common.exception.e4xx.NotFoundException;
-import com.nexters.pinataserver.common.exception.e4xx.NotParticipateTargetException;
 import com.nexters.pinataserver.common.util.ImageUtil;
 import com.nexters.pinataserver.event.domain.Event;
 import com.nexters.pinataserver.event.domain.EventItem;
@@ -52,9 +50,11 @@ public class EventParticipateService {
 		// 이벤트 조회
 		Event foundEvent = eventRepository.findByCodeForUpdate(eventCode)
 			.orElseThrow(NotFoundException.EVENT);
-		if (Objects.equals(participant.getId(), foundEvent.getOrganizerId())) {
-			throw NotParticipateTargetException.TARGET.getResponseException();
-		}
+
+		// 본인이 생성한 이벤트 참가 불가
+		// if (Objects.equals(participant.getId(), foundEvent.getOrganizerId())) {
+		// 	throw NotParticipateTargetException.TARGET.getResponseException();
+		// }
 
 		// 이벤트 참가 가능한 이벤트인지 검증
 		eventValidateService.validateCanParticipate(participantId, foundEvent);
