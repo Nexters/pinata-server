@@ -83,23 +83,34 @@ public class ImageUploadService {
 
 	}
 
-	// public Resource getObject(String imageFileName) throws IOException {
-	//     S3Object o = amazonS3Client.getObject(new GetObjectRequest(bucket, imageFileName));
-	//     S3ObjectInputStream objectInputStream = o.getObjectContent();
-	//     byte[] bytes = IOUtils.toByteArray(objectInputStream);
+	// public Resource downloadFile(String imageFileName) {
+	// 	try {
+	// 		S3Object s3object = amazonS3Client.getObject(new GetObjectRequest(bucket, imageFileName));
 	//
-	//     Resource resource = new ByteArrayResource(bytes);
-	//     return resource;
+	// 		S3ObjectInputStream objectInputStream = s3object.getObjectContent();
+	// 		byte[] bytes = IOUtils.toByteArray(objectInputStream);
+	//
+	// 		return new ByteArrayResource(bytes);
+	// 	} catch (IOException ioException) {
+	// 		log.error("IOException: " + ioException.getMessage());
+	// 		throw FileDownloadException.IMAGE.get();
+	// 	} catch (AmazonServiceException serviceException) {
+	// 		log.info("AmazonServiceException Message:    " + serviceException.getMessage());
+	// 		throw FileDownloadException.IMAGE.get();
+	// 	} catch (AmazonClientException clientException) {
+	// 		log.info("AmazonClientException Message: " + clientException.getMessage());
+	// 		throw FileDownloadException.IMAGE.get();
+	// 	}
 	// }
 
-	public Resource downloadFile(String imageFileName) {
+	public byte[] downloadFile(String imageFileName) {
 		try {
 			S3Object s3object = amazonS3Client.getObject(new GetObjectRequest(bucket, imageFileName));
 
 			S3ObjectInputStream objectInputStream = s3object.getObjectContent();
 			byte[] bytes = IOUtils.toByteArray(objectInputStream);
 
-			return new ByteArrayResource(bytes);
+			return bytes;
 		} catch (IOException ioException) {
 			log.error("IOException: " + ioException.getMessage());
 			throw FileDownloadException.IMAGE.get();
