@@ -39,13 +39,16 @@ public class ImageUploadController {
 		return CommonApiResponse.ok(ImageUploadResponse.of(uploadedUrls));
 	}
 
-	@GetMapping(value = "/download/{filename}")
-	public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
-		Resource resource = imageUploadService.downloadFile(filename);
+	@GetMapping(value = "/download/{fileName}")
+	public CommonApiResponse<ImageDownloadResponse> downloadFile(@PathVariable("fileName") String fileName) {
+		// Resource resource = imageUploadService.downloadFile(filename);
+		// return ResponseEntity.ok()
+		// 	.contentType(contentType(filename))
+		// 	.body(resource);
 
-		return ResponseEntity.ok()
-			.contentType(contentType(filename))
-			.body(resource);
+		byte[] bytes = imageUploadService.downloadFile(fileName);
+
+		return CommonApiResponse.ok(ImageDownloadResponse.of(bytes));
 	}
 
 	private MediaType contentType(String filename) {
