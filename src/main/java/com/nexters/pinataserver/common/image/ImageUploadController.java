@@ -1,11 +1,11 @@
 package com.nexters.pinataserver.common.image;
 
 import java.io.IOException;
-import java.sql.Blob;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,18 +40,31 @@ public class ImageUploadController {
 		return CommonApiResponse.ok(ImageUploadResponse.of(uploadedUrls));
 	}
 
+	// @GetMapping(value = "/download/{fileName}")
+	// public CommonApiResponse<ImageDownloadResponse> downloadFile(@PathVariable("fileName") String fileName) {
+	// 	Blob imageData = imageUploadService.downloadFile(fileName);
+	//
+	// 	return CommonApiResponse.ok(ImageDownloadResponse.of(imageData));
+	// }
+
+
+	// @GetMapping(value = "/download/{fileName}")
+	// public ResponseEntity<Resource> downloadFile(@PathVariable("fileName") String fileName) {
+	// 	Resource resource = imageUploadService.downloadFile(fileName);
+	//
+	// 	return ResponseEntity.ok()
+	// 		.contentType(contentType(fileName))
+	// 		.body(resource);
+	// }
+
 	@GetMapping(value = "/download/{fileName}")
-	public CommonApiResponse<ImageDownloadResponse> downloadFile(@PathVariable("fileName") String fileName) {
-		// Resource resource = imageUploadService.downloadFile(filename);
-		// return ResponseEntity.ok()
-		// 	.contentType(contentType(filename))
-		// 	.body(resource);
+	public ResponseEntity<byte[]> downloadFile(@PathVariable("fileName") String fileName) {
+		byte[] imageData =  imageUploadService.downloadFile(fileName);
 
-		Blob imageData = imageUploadService.downloadFile(fileName);
-
-		return CommonApiResponse.ok(ImageDownloadResponse.of(imageData));
+		return ResponseEntity.ok()
+			.contentType(contentType(fileName))
+			.body(imageData);
 	}
-
 	private MediaType contentType(String filename) {
 		String[] fileArrSplit = filename.split("\\.");
 		String fileExtension = fileArrSplit[fileArrSplit.length - 1];

@@ -2,14 +2,9 @@ package com.nexters.pinataserver.common.image;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialException;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -86,6 +81,32 @@ public class ImageUploadService {
 
 	}
 
+	public byte[] downloadFile(String imageFileName) {
+		try {
+			S3Object s3object = amazonS3Client.getObject(new GetObjectRequest(bucket, imageFileName));
+
+			S3ObjectInputStream objectInputStream = s3object.getObjectContent();
+
+			return IOUtils.toByteArray(objectInputStream);
+		} catch (IOException ioException) {
+			log.error("IOException: " + ioException.getMessage());
+			throw FileDownloadException.IMAGE.get();
+		} catch (AmazonServiceException serviceException) {
+			log.info("AmazonServiceException Message:    " + serviceException.getMessage());
+			throw FileDownloadException.IMAGE.get();
+		} catch (AmazonClientException clientException) {
+			log.info("AmazonClientException Message: " + clientException.getMessage());
+			throw FileDownloadException.IMAGE.get();
+		}
+		// catch (SerialException serialException) {
+		// 	log.error("SerialException Message: " + serialException.getMessage());
+		// 	throw FileDownloadException.IMAGE.get();
+		// } catch (SQLException sqlException) {
+		// 	log.error("SQLException Message: " + sqlException.getMessage());
+		// 	throw FileDownloadException.IMAGE.get();
+		// }
+	}
+
 	// public Resource downloadFile(String imageFileName) {
 	// 	try {
 	// 		S3Object s3object = amazonS3Client.getObject(new GetObjectRequest(bucket, imageFileName));
@@ -105,32 +126,32 @@ public class ImageUploadService {
 	// 		throw FileDownloadException.IMAGE.get();
 	// 	}
 	// }
-
-	public Blob downloadFile(String imageFileName) {
-		try {
-			S3Object s3object = amazonS3Client.getObject(new GetObjectRequest(bucket, imageFileName));
-
-			S3ObjectInputStream objectInputStream = s3object.getObjectContent();
-			byte[] bytes = IOUtils.toByteArray(objectInputStream);
-
-			return new SerialBlob(bytes);
-		} catch (IOException ioException) {
-			log.error("IOException: " + ioException.getMessage());
-			throw FileDownloadException.IMAGE.get();
-		} catch (AmazonServiceException serviceException) {
-			log.error("AmazonServiceException Message:    " + serviceException.getMessage());
-			throw FileDownloadException.IMAGE.get();
-		} catch (AmazonClientException clientException) {
-			log.error("AmazonClientException Message: " + clientException.getMessage());
-			throw FileDownloadException.IMAGE.get();
-		} catch (SerialException serialException) {
-			log.error("SerialException Message: " + serialException.getMessage());
-			throw FileDownloadException.IMAGE.get();
-		} catch (SQLException sqlException) {
-			log.error("SQLException Message: " + sqlException.getMessage());
-			throw FileDownloadException.IMAGE.get();
-		}
-	}
+	//
+	// public Blob downloadFile(String imageFileName) {
+	// 	try {
+	// 		S3Object s3object = amazonS3Client.getObject(new GetObjectRequest(bucket, imageFileName));
+	//
+	// 		S3ObjectInputStream objectInputStream = s3object.getObjectContent();
+	// 		byte[] bytes = IOUtils.toByteArray(objectInputStream);
+	//
+	// 		return new SerialBlob(bytes);
+	// 	} catch (IOException ioException) {
+	// 		log.error("IOException: " + ioException.getMessage());
+	// 		throw FileDownloadException.IMAGE.get();
+	// 	} catch (AmazonServiceException serviceException) {
+	// 		log.error("AmazonServiceException Message:    " + serviceException.getMessage());
+	// 		throw FileDownloadException.IMAGE.get();
+	// 	} catch (AmazonClientException clientException) {
+	// 		log.error("AmazonClientException Message: " + clientException.getMessage());
+	// 		throw FileDownloadException.IMAGE.get();
+	// 	} catch (SerialException serialException) {
+	// 		log.error("SerialException Message: " + serialException.getMessage());
+	// 		throw FileDownloadException.IMAGE.get();
+	// 	} catch (SQLException sqlException) {
+	// 		log.error("SQLException Message: " + sqlException.getMessage());
+	// 		throw FileDownloadException.IMAGE.get();
+	// 	}
+	// }
 
 }
 
