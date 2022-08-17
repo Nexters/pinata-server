@@ -1,15 +1,16 @@
 package com.nexters.pinataserver.common.image;
 
 import java.io.IOException;
+import java.sql.Blob;
 import java.util.List;
 
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -46,9 +47,9 @@ public class ImageUploadController {
 		// 	.contentType(contentType(filename))
 		// 	.body(resource);
 
-		byte[] bytes = imageUploadService.downloadFile(fileName);
+		Blob imageData = imageUploadService.downloadFile(fileName);
 
-		return CommonApiResponse.ok(ImageDownloadResponse.of(bytes));
+		return CommonApiResponse.ok(ImageDownloadResponse.of(imageData));
 	}
 
 	private MediaType contentType(String filename) {
@@ -66,6 +67,14 @@ public class ImageUploadController {
 			default:
 				return MediaType.APPLICATION_OCTET_STREAM;
 		}
+	}
+
+	@DeleteMapping
+	public CommonApiResponse delete(@RequestBody ImageDeleteRequest request) {
+
+		imageUploadService.deleteObject(request.getImageFileName());
+
+		return CommonApiResponse.ok(null);
 	}
 
 }

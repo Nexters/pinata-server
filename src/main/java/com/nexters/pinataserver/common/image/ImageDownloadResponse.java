@@ -1,6 +1,6 @@
 package com.nexters.pinataserver.common.image;
 
-import java.util.List;
+import java.sql.Blob;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,11 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ImageDownloadResponse {
 
-	private byte[] bytes;
+	private Blob imageData;
 
-	public static ImageDownloadResponse of(byte[] bytes) {
+	public static ImageDownloadResponse of(Blob imageData) {
 		ImageDownloadResponse imageDownloadResponse = new ImageDownloadResponse();
-		imageDownloadResponse.setBytes(bytes);
+		imageDownloadResponse.setImageData(imageData);
 
 		return imageDownloadResponse;
 	}
