@@ -12,6 +12,7 @@ import com.nexters.pinataserver.common.exception.e4xx.ExpiredAccessTokenExceptio
 import com.nexters.pinataserver.common.exception.e5xx.FileUploadException;
 import com.nexters.pinataserver.common.exception.e5xx.UnKnownException;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,10 +39,10 @@ public class ExceptionControllerAdvice {
 		);
 	}
 
-	@ExceptionHandler(ExpiredAccessTokenException.class)
+	@ExceptionHandler(ExpiredJwtException.class)
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	public CommonApiResponse<ResponseException> handleExpiredAccessTokenException(
-		ExpiredAccessTokenException exception) {
+		ExpiredJwtException exception) {
 		log.error("{}", exception);
 
 		return CommonApiResponse.error(

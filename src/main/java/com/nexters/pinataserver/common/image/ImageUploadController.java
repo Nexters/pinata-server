@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +33,7 @@ public class ImageUploadController {
 
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping
-	public CommonApiResponse<ImageUploadResponse> createBoards(
+	public CommonApiResponse<ImageUploadResponse> upload(
 		@RequestParam(value = "files", required = false) List<MultipartFile> multipartFile) throws
 		IOException {
 		List<String> uploadedUrls = imageUploadService.upload(multipartFile);
