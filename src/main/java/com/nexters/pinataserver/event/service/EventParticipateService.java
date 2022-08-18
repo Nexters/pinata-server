@@ -54,9 +54,9 @@ public class EventParticipateService {
 			.orElseThrow(NotFoundException.EVENT);
 
 		// 본인이 생성한 이벤트 참가 불가
-		if (Objects.equals(participant.getId(), foundEvent.getOrganizerId())) {
-			throw NotParticipateTargetException.TARGET.getResponseException();
-		}
+		// if (Objects.equals(participant.getId(), foundEvent.getOrganizerId())) {
+		// 	throw NotParticipateTargetException.TARGET.getResponseException();
+		// }
 
 		// 이벤트 참가 가능한 이벤트인지 검증
 		eventValidateService.validateCanParticipate(participantId, foundEvent);
