@@ -38,6 +38,21 @@ public class ExceptionControllerAdvice {
 		);
 	}
 
+	@ExceptionHandler(ExpiredAccessTokenException.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public CommonApiResponse<ResponseException> handleExpiredAccessTokenException(
+		ExpiredAccessTokenException exception) {
+		log.error("{}", exception);
+
+		return CommonApiResponse.error(
+			new ResponseException(
+				HttpStatus.UNAUTHORIZED,
+				"TOKEN_EXPIRED",
+				"토큰이 만료되었습니다."
+			)
+		);
+	}
+
 	@ExceptionHandler(ResponseException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public CommonApiResponse<ResponseException> processException(ResponseException exception) {
