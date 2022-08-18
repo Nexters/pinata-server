@@ -7,13 +7,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
-import com.nexters.pinataserver.common.exception.e4xx.AuthenticationException;
-import com.nexters.pinataserver.common.exception.e4xx.ExpiredAccessTokenException;
-import com.nexters.pinataserver.common.exception.e5xx.FileUploadException;
 import com.nexters.pinataserver.common.exception.e5xx.UnKnownException;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
