@@ -46,7 +46,7 @@ public class FixStatusService {
 		}
 
 		// (시작시간 <= now <= 종료시간) -> PROCESS
-		if (eventDateTime.isBeforeOpenDateTime(now) && eventStatus.isNotProcess()) {
+		if (eventDateTime.isAfterOpenDateTime(now) && eventDateTime.isBeforeCloseDateTime(now) && eventStatus.isNotProcess()) {
 			event.changeStatus(EventStatus.PROCESS);
 		}
 	}

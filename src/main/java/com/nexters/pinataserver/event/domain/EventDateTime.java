@@ -70,6 +70,14 @@ public class EventDateTime {
 		return now.isBefore(openAt);
 	}
 
+	public boolean isAfterOpenDateTime(LocalDateTime now) {
+		return now.isAfter(openAt);
+	}
+
+	public boolean isBeforeCloseDateTime(LocalDateTime now) {
+		return now.isBefore(closeAt);
+	}
+
 	public boolean isAfterCloseDateTime(LocalDateTime now) {
 		return now.isAfter(closeAt);
 	}
