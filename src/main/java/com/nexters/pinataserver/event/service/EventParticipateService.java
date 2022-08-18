@@ -107,8 +107,7 @@ public class EventParticipateService {
 		String resultImageUrl = isHit ? imageUtil.getFullImageUrl(foundEvent.getHitImageFileName())
 			: imageUtil.getFullImageUrl(foundEvent.getMissImageFileName());
 		Long hitEventItemId = (hitEventItem.getId() != null) ? hitEventItem.getId() : null;
-		String hitItemTitle = (hitEventItem.getTitle() != null) ? imageUtil.getFullImageUrl(
-			hitEventItem.getImageFileName()) : null;
+		String hitItemTitle = (hitEventItem.getTitle() != null) ? hitEventItem.getTitle() : null;
 		String hitItemImageUrl = (hitEventItem.getImageFileName() != null) ? imageUtil.getFullImageUrl(
 			hitEventItem.getImageFileName()) : null;
 
