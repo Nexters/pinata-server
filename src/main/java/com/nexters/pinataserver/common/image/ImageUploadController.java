@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.nexters.pinataserver.common.dto.response.CommonApiResponse;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,10 +61,10 @@ public class ImageUploadController {
 	@GetMapping(value = "/download/{fileName}")
 	public ResponseEntity<byte[]> downloadFile(@PathVariable("fileName") String fileName) {
 		byte[] imageData =  imageUploadService.downloadFile(fileName);
-
-		return ResponseEntity.ok()
-			.contentType(contentType(fileName))
-			.body(imageData);
+		throw new ExpiredJwtException(null, null, null);
+		// return ResponseEntity.ok()
+		// 	.contentType(contentType(fileName))
+		// 	.body(imageData);
 	}
 	private MediaType contentType(String filename) {
 		String[] fileArrSplit = filename.split("\\.");
