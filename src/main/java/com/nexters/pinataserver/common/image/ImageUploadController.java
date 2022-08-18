@@ -33,7 +33,7 @@ public class ImageUploadController {
 
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping
-	public CommonApiResponse<ImageUploadResponse> createBoards(
+	public CommonApiResponse<ImageUploadResponse> upload(
 		@RequestParam(value = "files", required = false) List<MultipartFile> multipartFile) throws
 		IOException {
 		List<String> uploadedUrls = imageUploadService.upload(multipartFile);
