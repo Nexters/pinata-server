@@ -50,9 +50,9 @@ public class EventReadService {
 		eventValidateService.validateCanParticipate(participantId, foundEvent);
 
 		// 본인이 생성한 이벤트 참가 불가
-		if (Objects.equals(participantId, foundEvent.getOrganizerId())) {
-			throw NotParticipateTargetException.TARGET.getResponseException();
-		}
+		// if (Objects.equals(participantId, foundEvent.getOrganizerId())) {
+		// 	throw NotParticipateTargetException.TARGET.getResponseException();
+		// }
 
 		return convertToReadCurrentParticipateEventResponse(foundEvent);
 	}

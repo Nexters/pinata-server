@@ -34,29 +34,12 @@ public class ImageUploadController {
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping
 	public CommonApiResponse<ImageUploadResponse> upload(
-		@RequestParam(value = "files", required = false) List<MultipartFile> multipartFile) throws
-		IOException {
+		@RequestParam(value = "files", required = false) List<MultipartFile> multipartFile) {
 		List<String> uploadedUrls = imageUploadService.upload(multipartFile);
 
 		return CommonApiResponse.ok(ImageUploadResponse.of(uploadedUrls));
 	}
 
-	// @GetMapping(value = "/download/{fileName}")
-	// public CommonApiResponse<ImageDownloadResponse> downloadFile(@PathVariable("fileName") String fileName) {
-	// 	Blob imageData = imageUploadService.downloadFile(fileName);
-	//
-	// 	return CommonApiResponse.ok(ImageDownloadResponse.of(imageData));
-	// }
-
-
-	// @GetMapping(value = "/download/{fileName}")
-	// public ResponseEntity<Resource> downloadFile(@PathVariable("fileName") String fileName) {
-	// 	Resource resource = imageUploadService.downloadFile(fileName);
-	//
-	// 	return ResponseEntity.ok()
-	// 		.contentType(contentType(fileName))
-	// 		.body(resource);
-	// }
 
 	@GetMapping(value = "/download/{fileName}")
 	public ResponseEntity<byte[]> downloadFile(@PathVariable("fileName") String fileName) {
