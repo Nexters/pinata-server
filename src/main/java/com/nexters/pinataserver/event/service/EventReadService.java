@@ -1,7 +1,6 @@
 package com.nexters.pinataserver.event.service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nexters.pinataserver.common.exception.e4xx.NotFoundException;
-import com.nexters.pinataserver.common.exception.e4xx.NotParticipateTargetException;
 import com.nexters.pinataserver.common.util.ImageUtil;
 import com.nexters.pinataserver.event.domain.Event;
 import com.nexters.pinataserver.event.domain.EventItem;
@@ -17,10 +15,11 @@ import com.nexters.pinataserver.event.domain.EventRepository;
 import com.nexters.pinataserver.event.dto.query.ParticipationEventDto;
 import com.nexters.pinataserver.event.dto.response.OrganizersEventResponse;
 import com.nexters.pinataserver.event.dto.response.ReadCurrentParticipateEventResponse;
-import com.nexters.pinataserver.event.dto.response.ReadParticipateEventsResponse;
 import com.nexters.pinataserver.event.dto.response.ReadEventResponse;
+import com.nexters.pinataserver.event.dto.response.ReadParticipateEventsResponse;
 import com.nexters.pinataserver.event_history.domain.EventHistory;
 import com.nexters.pinataserver.event_history.domain.EventHistoryRepository;
+import com.nexters.pinataserver.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +35,8 @@ public class EventReadService {
 	private final EventValidateService eventValidateService;
 
 	private final EventHistoryRepository eventHistoryRepository;
+
+	private final UserService userService;
 
 	private final ImageUtil imageUtil;
 
@@ -94,11 +95,11 @@ public class EventReadService {
 				.eventCode(participationEventDto.getEventCode())
 				.result(participationEventDto.isResult())
 				.resultImageUrl(
-					participationEventDto.isResult() ?  imageUtil.getFullImageUrl(participationEventDto.getHitImageFileName()) : imageUtil.getFullImageUrl(participationEventDto.getMissImageFileName()))
+					participationEventDto.isResult() ? imageUtil.getFullImageUrl(participationEventDto.getHitImageFileName()) : imageUtil.getFullImageUrl(participationEventDto.getMissImageFileName()))
 				.itemId(participationEventDto.getItemId())
 				.itemTitle(
 					participationEventDto.isResult() ? participationEventDto.getItemTitle() : null
-					)
+				)
 				.itemImageUrl(imageUtil.getFullImageUrl(participationEventDto.getItemImageFileName()))
 				.openAt(participationEventDto.getOpenAt())
 				.closeAt(participationEventDto.getCloseAt())
@@ -154,7 +155,12 @@ public class EventReadService {
 			.isAccepted(eventItem.isAccepted())
 			.acceptorEmail(foundEventHistory.getParticipantEmail())
 			.acceptorNickname(foundEventHistory.getParticipantName())
+			.acceptorProfileImageUrl(foundEventHistory.getParticipantId() != null ? getUserProfileImage(foundEventHistory.getParticipantId()) : null)
 			.build();
+	}
+
+	private String getUserProfileImage(Long userId) {
+		return userService.getUserById(userId).getProfileImageUrl();
 	}
 
 	private EventHistory getEventHistory(EventItem eventItem) {

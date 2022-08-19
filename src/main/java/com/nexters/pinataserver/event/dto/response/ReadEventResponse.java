@@ -7,10 +7,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nexters.pinataserver.event.domain.EventStatus;
 import com.nexters.pinataserver.event.domain.EventType;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
@@ -44,7 +42,7 @@ public class ReadEventResponse {
 
 	private Integer totalParticipantCount;
 
-	private List<ReadEventResponse.EventItemResult> items;
+	private List<EventItemResult> items;
 
 	public ReadEventResponse(Long id, String title, String code, EventType type, EventStatus status, String hitMessage,
 		String hitImageUrl, String missMessage, String missImageUrl, boolean isPeriod, LocalDateTime openAt,
@@ -68,26 +66,17 @@ public class ReadEventResponse {
 	@Getter
 	@Builder
 	public static class EventItemResult {
-
 		private Long id;
-
 		private String title;
-
 		private String imageUrl;
-
 		private Integer rank;
-
 		private boolean isAccepted;
-
 		private String acceptorEmail;
-
 		private String acceptorNickname;
-
 		private String acceptorProfileImageUrl;
 
 		public EventItemResult(Long id, String title, String imageUrl, Integer rank, boolean isAccepted,
-			String acceptorEmail,
-			String acceptorNickname, String acceptorProfileImageUrl) {
+			String acceptorEmail, String acceptorNickname, String acceptorProfileImageUrl) {
 			this.id = id;
 			this.title = title;
 			this.imageUrl = imageUrl;

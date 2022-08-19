@@ -10,4 +10,7 @@ public interface EventRepositoryCustom {
 	List<Event> getMyEvents(Long userId, Pageable pageable);
 
 	List<ParticipationEventDto> getParticipationEvents(Long userId, Pageable pageable);
+
+	// List<ReadEventResponse.EventItemResult> getEventResult(Long eventId);
+
 }

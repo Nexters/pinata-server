@@ -31,7 +31,7 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
 			.limit(pageable.getPageSize())
 			.fetch();
 	}
-	
+
 	@Override
 	public List<ParticipationEventDto> getParticipationEvents(Long userId, Pageable pageable) {
 		return queryFactory.from(eventHistory)
@@ -61,5 +61,23 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
 			.limit(pageable.getPageSize())
 			.fetch();
 	}
+
+	// @Override
+	// public List<ReadEventResponse.EventItemResult> getEventResult(Long eventId) {
+	// 	return queryFactory.from(event)
+	// 		.select(Projections.constructor(
+	// 			ReadEventResponse.EventItemResult.class,
+	// 			eventHistory.id.as("id"),
+	// 			eventHistory.title.as("title"),
+	// 			user.profileImageUrl.as("imageUrl"),
+	// 			eventHistory.useFlag.as("isAccepted"),
+	// 			eventHistory.participantEmail.as("acceptorEmail"),
+	// 			eventHistory.participantName.as("acceptorNickname"),
+	// 			user.profileImageUrl.as("acceptorProfileImageUrl")
+	// 		))
+	// 		.leftJoin(eventHistory).on(eventHistory.eventId.eq(eventId))
+	// 		.leftJoin(user).on(user.id.eq(eventHistory.participantId))
+	// 		.fetch();
+	// }
 
 }
