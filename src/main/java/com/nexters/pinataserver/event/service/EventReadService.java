@@ -131,6 +131,10 @@ public class EventReadService {
 			.closeAt(foundEvent.getEventDateTime().getCloseAt())
 			.type(foundEvent.getType())
 			.totalParticipantCount(foundEvent.getParticipantCount())
+			.hitMessage(foundEvent.getHitMessage())
+			.hitImageUrl(imageUtil.getFullImageUrl(foundEvent.getHitImageFileName()))
+			.missMessage(foundEvent.getMissMessage())
+			.missImageUrl(imageUtil.getFullImageUrl(foundEvent.getMissImageFileName()))
 			.items(foundEvent.getEventItems().stream()
 				.map(this::convertToReadEventItemResult)
 				.collect(Collectors.toList()))
@@ -144,6 +148,7 @@ public class EventReadService {
 
 		return ReadEventResponse.EventItemResult.builder()
 			.id(eventItem.getId())
+			.title(eventItem.getTitle())
 			.rank(eventItem.getRanking())
 			.imageUrl(imageUtil.getFullImageUrl(eventItem.getImageFileName()))
 			.isAccepted(eventItem.isAccepted())

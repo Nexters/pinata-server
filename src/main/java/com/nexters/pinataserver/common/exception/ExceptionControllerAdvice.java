@@ -58,6 +58,7 @@ public class ExceptionControllerAdvice {
 	}
 
 	@ExceptionHandler(Exception.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public CommonApiResponse<ResponseException> handleException(Exception exception) {
 		log.info("{}", exception);
 		return CommonApiResponse.error(UnKnownException.UNKNOWN.getResponseException());
