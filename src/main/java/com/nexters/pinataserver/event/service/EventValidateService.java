@@ -26,7 +26,7 @@ public class EventValidateService {
     public void validateCanParticipate(Long participantId, Event foundEvent) {
 
         // 이미 참가한 이벤트인지 검증
-        // checkAlreadyParticipate(participantId, foundEvent.getId());
+        checkAlreadyParticipate(participantId, foundEvent.getId());
 
         // 기간이 지나지는 않았나??
         checkEventTimeOut(foundEvent);
