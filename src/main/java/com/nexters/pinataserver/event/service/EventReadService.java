@@ -160,7 +160,7 @@ public class EventReadService {
 	private EventHistory getEventHistory(EventItem eventItem) {
 		EventHistory empty = EventHistory.builder().build();
 
-		return eventHistoryRepository.findByEventId(eventItem.getEvent().getId())
+		return eventHistoryRepository.findByEventItemId(eventItem.getId())
 			.orElse(empty);
 	}
 

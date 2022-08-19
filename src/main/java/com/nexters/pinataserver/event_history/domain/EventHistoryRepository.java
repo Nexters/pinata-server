@@ -10,7 +10,7 @@ public interface EventHistoryRepository extends JpaRepository<EventHistory, Long
 
 	Boolean existsByParticipantIdAndEventId(@Param("participantId") Long participantId, @Param("eventId") Long eventId);
 
-	@Query("select eh from EventHistory eh where eh.eventId = :eventId")
-	Optional<EventHistory> findByEventId(@Param("eventId") Long eventId);
+	@Query("select eh from EventHistory eh where eh.eventItemId = :eventItemId")
+	Optional<EventHistory> findByEventItemId(@Param("eventItemId") Long eventItemId);
 
 }
