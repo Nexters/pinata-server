@@ -61,10 +61,10 @@ public class ImageUploadController {
 	@GetMapping(value = "/download/{fileName}")
 	public ResponseEntity<byte[]> downloadFile(@PathVariable("fileName") String fileName) {
 		byte[] imageData =  imageUploadService.downloadFile(fileName);
-
-		return ResponseEntity.ok()
-			.contentType(contentType(fileName))
-			.body(imageData);
+		throw new ExpiredJwtException(null, null, null);
+		// return ResponseEntity.ok()
+		// 	.contentType(contentType(fileName))
+		// 	.body(imageData);
 	}
 	private MediaType contentType(String filename) {
 		String[] fileArrSplit = filename.split("\\.");
