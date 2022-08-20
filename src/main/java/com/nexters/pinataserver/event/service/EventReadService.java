@@ -157,7 +157,7 @@ public class EventReadService {
 			.isAccepted(eventItem.isAccepted())
 			.acceptorEmail(foundEventHistory.getParticipantEmail())
 			.acceptorNickname(foundEventHistory.getParticipantName())
-			.acceptorProfileImageUrl(foundEventHistory.getParticipantId() != null ? getUserProfileImage(foundEventHistory.getParticipantId()) : null)
+			.acceptorProfileImageUrl(foundEventHistory.isHit() ? getUserProfileImage(foundEventHistory.getParticipantId()) : null)
 			.build();
 	}
 
