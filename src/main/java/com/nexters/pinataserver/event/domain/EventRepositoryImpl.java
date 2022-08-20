@@ -26,7 +26,8 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
 		return queryFactory
 			.selectFrom(event)
 			.where(event.organizerId.eq(userId))
-			.orderBy(event.status.asc(), event.createdAt.desc())
+			// .orderBy(event.status.asc(), event.createdAt.desc())
+			.orderBy( event.createdAt.desc())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
@@ -56,7 +57,8 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
 			.leftJoin(event).on(event.id.eq(eventHistory.eventId))
 			.leftJoin(eventItem).on(eventItem.id.eq(eventHistory.eventItemId))
 			.where(eventHistory.participantId.eq(userId))
-			.orderBy(event.status.asc(), event.createdAt.desc())
+			.orderBy(event.createdAt.desc())
+			// .orderBy(event.status.asc(), event.createdAt.desc())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
