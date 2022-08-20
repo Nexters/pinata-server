@@ -1,6 +1,7 @@
 package com.nexters.pinataserver.event.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nexters.pinataserver.common.exception.e4xx.NotFoundException;
+import com.nexters.pinataserver.common.exception.e4xx.NotParticipateTargetException;
 import com.nexters.pinataserver.common.util.ImageUtil;
 import com.nexters.pinataserver.event.domain.Event;
 import com.nexters.pinataserver.event.domain.EventItem;
@@ -51,9 +53,9 @@ public class EventReadService {
 		eventValidateService.validateCanParticipate(participantId, foundEvent);
 
 		// 본인이 생성한 이벤트 참가 불가
-		// if (Objects.equals(participantId, foundEvent.getOrganizerId())) {
-		// 	throw NotParticipateTargetException.TARGET.getResponseException();
-		// }
+		if (Objects.equals(participantId, foundEvent.getOrganizerId())) {
+			throw NotParticipateTargetException.TARGET.getResponseException();
+		}
 
 		return convertToReadCurrentParticipateEventResponse(foundEvent);
 	}
