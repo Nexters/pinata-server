@@ -1,6 +1,6 @@
 ## Dockerfile-prod
 FROM openjdk:14-jdk-slim
-EXPOSE 8080
+EXPOSE 65123
 ARG JAR_FILE=/build/libs/pinata-server-0.0.1-SNAPSHOT.jar
 VOLUME ["/var/log"]
 COPY ${JAR_FILE} app.jar
