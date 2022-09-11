@@ -47,3 +47,6 @@ out/
 
 ### env File ###
 .env
+
+## log
+*.log
