@@ -83,6 +83,7 @@ jobs:
       with:
           host: ${{ secrets.HOST_PROD }}
           username: ubuntu
+          password: ${{ secrets.PASSWORD }}
           # key: ${{ secrets.PRIVATE_KEY }}
           envs: GITHUB_SHA
           script: |
