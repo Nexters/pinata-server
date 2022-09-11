@@ -61,10 +61,9 @@ jobs:
           echo "${{ secrets.YML_OBJECT_STORAGE }}" > ./application-storage.yml
       shell: bash
 
-
     ## gradle build
     - name: Build with Gradle
-      run: ./gradlew build -x test -x ktlintCheck -x ktlintTestSourceSetCheck -x ktlintMainSourceSetCheck -x ktlintKotlinScriptCheck
+      run: ./gradlew build
 
     ## docker build & push to production
     - name: Docker build & push to prod
@@ -72,14 +71,6 @@ jobs:
       run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -f Dockerfile-prod -t ${{ secrets.DOCKER_REPO }}/pinata-server .
-          docker push ${{ secrets.DOCKER_REPO }}/pinata-server
-
-    ## docker build & push to develop
-    - name: Docker build & push to dev
-      if: contains(github.ref, 'dev')
-      run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -f Dockerfile-dev -t ${{ secrets.DOCKER_REPO }}/pinata-server .
           docker push ${{ secrets.DOCKER_REPO }}/pinata-server
 
     ## deploy to production
