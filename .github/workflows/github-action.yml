@@ -82,10 +82,10 @@ jobs:
       if: contains(github.ref, 'dev')
       with:
           host: ${{ secrets.HOST_PROD }}
-          username: ubuntu
+          username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          # key: ${{ secrets.PRIVATE_KEY }}
-          envs: GITHUB_SHA
+          port: 22
+          #key: ${{ secrets.PRIVATE_KEY }}
           script: |
               cd ./app
               sudo docker rm -f $(docker ps -qa)
